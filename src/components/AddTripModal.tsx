@@ -67,9 +67,19 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="add-trip-modal-title"
+    >
       <div className="bg-white dark:bg-gray-800 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto p-6 shadow-lg">
-        <h2 className="text-xl mb-4 font-semibold text-gray-800 dark:text-gray-100">Add Trip</h2>
+        <h2
+          id="add-trip-modal-title"
+          className="text-xl mb-4 font-semibold text-gray-800 dark:text-gray-100"
+        >
+          Add Trip
+        </h2>
         <div className="space-y-4">
           <div>
             <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Passenger</label>

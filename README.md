@@ -20,3 +20,9 @@ yarn start
 ```
 
 This runs a Vite powered React + TypeScript app at `http://localhost:3000`.
+
+To verify type safety, run the TypeScript compiler without emitting files:
+
+```bash
+yarn tsc
+```
