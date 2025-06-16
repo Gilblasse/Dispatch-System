@@ -38,6 +38,7 @@ export const trips: Trip[] = [
     driverId: 'd1',
     pickup: '123 Main St',
     dropoff: '456 Oak Ave',
+    payer: 'Medicaid',
     vehicleId: 'v1',
     transport: 'Ambulatory',
     phone: '555-0101',
@@ -46,3 +47,4 @@ export const trips: Trip[] = [
     status: 'scheduled',
   },
 ];
+

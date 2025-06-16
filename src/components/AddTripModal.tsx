@@ -17,6 +17,7 @@ const defaultTrip: Omit<Trip, 'id' | 'invoice' | 'status'> = {
   driverId: '',
   pickup: '',
   dropoff: '',
+  payer: 'Medicaid',
   vehicleId: undefined,
   transport: 'Ambulatory',
   phone: '',
@@ -47,6 +48,7 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
         medicaid: passenger.medicaid ?? '',
         pickup: passenger.lastPickup ?? '',
         dropoff: passenger.lastDropoff ?? '',
+        payer: passenger.medicaid ? 'Medicaid' : 'Private',
       }));
     }
   };
@@ -92,18 +94,29 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
                 onChange={e => setForm({ ...form, phone: e.target.value })}
               />
             </div>
-            {form.transport === 'Ambulatory' && (
-              <div>
-                <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Medicaid ID</label>
-                <input
-                  type="text"
-                  className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
-                  value={form.medicaid}
-                  onChange={e => setForm({ ...form, medicaid: e.target.value })}
-                />
-              </div>
-            )}
+            <div>
+              <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Payer</label>
+              <select
+                className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
+                value={form.payer}
+                onChange={e => setForm({ ...form, payer: e.target.value as 'Medicaid' | 'Private' })}
+              >
+                <option value="Medicaid">Medicaid</option>
+                <option value="Private">Private</option>
+              </select>
+            </div>
           </div>
+          {form.payer === 'Medicaid' && (
+            <div>
+              <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Medicaid ID</label>
+              <input
+                type="text"
+                className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
+                value={form.medicaid}
+                onChange={e => setForm({ ...form, medicaid: e.target.value })}
+              />
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Pickup</label>
@@ -213,3 +226,4 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
     </div>
   );
 };
+

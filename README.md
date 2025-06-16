@@ -8,7 +8,7 @@ This is a mock React + TypeScript application for managing trip dispatches. It u
 - **src/components** – React components
 - **src/styles** – Tailwind CSS setup
 
-All data is kept in local state and there is no backend.
+All data is kept in local state and there is no backend. Use the dark mode button in the header to toggle themes.
 
 ## Development
 

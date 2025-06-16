@@ -37,6 +37,7 @@ export interface Trip {
   driverId: string;
   pickup: string;
   dropoff: string;
+  payer: 'Medicaid' | 'Private';
   vehicleId?: string;
   transport: 'Ambulatory' | 'Wheelchair' | 'Taxi' | 'Stretcher';
   phone: string;
@@ -44,3 +45,4 @@ export interface Trip {
   invoice: string;
   status: TripStatus;
 }
+
