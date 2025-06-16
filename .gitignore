@@ -1,0 +1,10 @@
+# Node
+node_modules
+
+# Yarn
+.pnp.cjs
+.pnp.loader.mjs
+.yarn/
+
+# Build outputs
+
