@@ -11,6 +11,8 @@ export interface Driver {
   name: string;
   phone: string;
   email: string;
+  license: string;
+  licenseExp: string;
 }
 
 export interface Vehicle {

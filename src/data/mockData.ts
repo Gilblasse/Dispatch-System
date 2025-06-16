@@ -18,8 +18,22 @@ export const passengers: Passenger[] = [
 ];
 
 export const drivers: Driver[] = [
-  { id: 'd1', name: 'Alice Johnson', phone: '555-1111', email: 'alice@example.com' },
-  { id: 'd2', name: 'Bob Lee', phone: '555-2222', email: 'bob@example.com' },
+  {
+    id: 'd1',
+    name: 'Alice Johnson',
+    phone: '555-1111',
+    email: 'alice@example.com',
+    license: 'A1234567',
+    licenseExp: '2026-01-01',
+  },
+  {
+    id: 'd2',
+    name: 'Bob Lee',
+    phone: '555-2222',
+    email: 'bob@example.com',
+    license: 'B7654321',
+    licenseExp: '2025-12-31',
+  },
 ];
 
 export const vehicles: Vehicle[] = [
