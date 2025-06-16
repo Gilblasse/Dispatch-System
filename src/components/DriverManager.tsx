@@ -102,12 +102,12 @@ export const DriverManager: React.FC<Props> = ({ drivers, addDriver, updateDrive
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded shadow">
+    <div className="bg-white dark:bg-gray-800 p-4 rounded shadow overflow-x-auto">
       <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-100">Drivers</h2>
       <button className="mb-2 px-4 py-2 bg-blue-600 text-white rounded" onClick={handleAddRow}>
         Add Driver
       </button>
-      <table className="min-w-full table-auto">
+      <table className="min-w-full w-full table-auto">
         <thead>
           <tr className="text-left text-gray-700 dark:text-gray-200">
             <th className="p-2">Name</th>
