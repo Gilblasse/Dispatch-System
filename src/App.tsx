@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import {
   trips as initialTrips,
   drivers as initialDrivers,
+  passengers as initialPassengers,
   vehicles,
 } from './data/mockData';
-import { Trip, Driver } from './types';
+import { Trip, Driver, Passenger } from './types';
 import { DispatcherDashboard } from './components/DispatcherDashboard';
 import { DriverManager } from './components/DriverManager';
 
 export const App: React.FC = () => {
   const [trips, setTrips] = useState<Trip[]>(initialTrips);
   const [drivers, setDrivers] = useState<Driver[]>(initialDrivers);
+  const [passengers, setPassengers] = useState<Passenger[]>(initialPassengers);
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
@@ -19,10 +21,11 @@ export const App: React.FC = () => {
     else root.classList.remove('dark');
   }, [dark]);
 
-  // Load persisted trips and drivers on first render
+  // Load persisted trips, drivers and passengers on first render
   useEffect(() => {
     const storedTrips = localStorage.getItem('trips');
     const storedDrivers = localStorage.getItem('drivers');
+    const storedPassengers = localStorage.getItem('passengers');
 
     if (storedTrips) {
       try {
@@ -39,9 +42,17 @@ export const App: React.FC = () => {
         // ignore parse errors and keep defaults
       }
     }
+
+    if (storedPassengers) {
+      try {
+        setPassengers(JSON.parse(storedPassengers));
+      } catch {
+        // ignore parse errors and keep defaults
+      }
+    }
   }, []);
 
-  // Persist trips and drivers whenever they change
+  // Persist trips, drivers and passengers whenever they change
   useEffect(() => {
     localStorage.setItem('trips', JSON.stringify(trips));
   }, [trips]);
@@ -50,12 +61,26 @@ export const App: React.FC = () => {
     localStorage.setItem('drivers', JSON.stringify(drivers));
   }, [drivers]);
 
+  useEffect(() => {
+    localStorage.setItem('passengers', JSON.stringify(passengers));
+  }, [passengers]);
+
   const addTrip = (trip: Trip) => {
     setTrips(prev => [...prev, trip]);
   };
 
   const addDriver = (driver: Driver) => {
     setDrivers(prev => [...prev, driver]);
+  };
+
+  const addPassenger = (passenger: Passenger) => {
+    setPassengers(prev => [...prev, passenger]);
+  };
+
+  const updatePassenger = (passenger: Passenger) => {
+    setPassengers(prev =>
+      prev.map(p => (p.id === passenger.id ? passenger : p))
+    );
   };
 
   return (
@@ -69,7 +94,15 @@ export const App: React.FC = () => {
           {dark ? 'Light' : 'Dark'} Mode
         </button>
       </div>
-      <DispatcherDashboard trips={trips} drivers={drivers} vehicles={vehicles} addTrip={addTrip} />
+      <DispatcherDashboard
+        trips={trips}
+        drivers={drivers}
+        vehicles={vehicles}
+        passengers={passengers}
+        addTrip={addTrip}
+        addPassenger={addPassenger}
+        updatePassenger={updatePassenger}
+      />
       <DriverManager drivers={drivers} addDriver={addDriver} />
     </div>
   );
