@@ -27,6 +27,8 @@ To verify type safety, run the TypeScript compiler without emitting files:
 npm run tsc
 ```
 
+## Testing
+
 Run unit tests with Jest:
 
 ```bash
