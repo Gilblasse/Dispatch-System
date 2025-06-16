@@ -102,7 +102,7 @@ export const DriverManager: React.FC<Props> = ({ drivers, addDriver, updateDrive
   );
 
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded shadow overflow-x-auto w-1/3">
+    <div className="bg-white dark:bg-gray-800 p-4 rounded shadow overflow-x-auto w-full">
       <h2 className="text-lg font-semibold mb-2 text-gray-800 dark:text-gray-100">Drivers</h2>
       <button className="mb-2 px-4 py-2 bg-blue-600 text-white rounded" onClick={handleAddRow}>
         Add Driver
