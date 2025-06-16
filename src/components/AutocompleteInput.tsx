@@ -40,7 +40,7 @@ export const AutocompleteInput: React.FC<Props> = ({
       {open && filtered.length > 0 && (
         <ul
           data-testid="autocomplete-options"
-          className="absolute z-10 mt-1 left-0 top-full w-full max-h-40 overflow-auto border bg-white dark:bg-gray-800 rounded shadow"
+          className="absolute z-10 mt-1 w-full max-h-40 overflow-auto border bg-white dark:bg-gray-800 rounded shadow"
         >
           {filtered.map(opt => (
             <li key={opt}>
