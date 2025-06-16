@@ -52,20 +52,32 @@ export const DispatcherDashboard: React.FC<Props> = ({ trips, drivers, vehicles,
         </button>
       </div>
       <ul className="space-y-2">
-        {filteredTrips.map(trip => (
-          <li key={trip.id} className="bg-white dark:bg-gray-800 p-4 rounded shadow">
-            <div className="flex justify-between mb-2">
-              <span className="font-semibold text-gray-700 dark:text-gray-200">{passengers.find(p => p.id === trip.passengerId)?.name}</span>
-              <span className="text-sm text-gray-500 dark:text-gray-400">{trip.date} {trip.time}</span>
-            </div>
-            <div className="text-gray-600 dark:text-gray-300">
-              {trip.pickup} → {trip.dropoff}
-            </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              Status: {trip.status}
-            </div>
-          </li>
-        ))}
+        {filteredTrips.map(trip => {
+          const passenger = passengers.find(p => p.id === trip.passengerId);
+          const driver = drivers.find(d => d.id === trip.driverId);
+          return (
+            <li key={trip.id} className="bg-white dark:bg-gray-800 p-4 rounded shadow">
+              <div className="flex justify-between mb-1">
+                <span className="font-semibold text-gray-700 dark:text-gray-200">
+                  {passenger?.name}
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {trip.date} {trip.time}
+                </span>
+              </div>
+              <div className="flex justify-between mb-1 text-sm text-gray-500 dark:text-gray-400">
+                <span>{driver?.name}</span>
+                <span>{trip.transport}</span>
+              </div>
+              <div className="text-gray-600 dark:text-gray-300">
+                {trip.pickup} → {trip.dropoff}
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">
+                Status: {trip.status}
+              </div>
+            </li>
+          );
+        })}
       </ul>
       <AddTripModal
         open={modalOpen}
