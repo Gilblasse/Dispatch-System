@@ -27,6 +27,7 @@ const defaultTrip: Omit<Trip, 'id' | 'invoice' | 'status'> = {
 export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles, addTrip }) => {
   const [form, setForm] = useState(defaultTrip);
   const [invoice, setInvoice] = useState('');
+  const [passengerName, setPassengerName] = useState('');
 
   useEffect(() => {
     if (open) {
@@ -35,30 +36,49 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
       document.body.style.overflow = '';
       setForm(defaultTrip);
       setInvoice('');
+      setPassengerName('');
     }
   }, [open]);
 
-  const handlePassengerChange = (id: string) => {
-    const passenger = passengers.find(p => p.id === id);
+  const handlePassengerChange = (name: string) => {
+    setPassengerName(name);
+    const passenger = passengers.find(
+      p => p.name.toLowerCase() === name.toLowerCase()
+    );
     if (passenger) {
       setForm(prev => ({
         ...prev,
         passengerId: passenger.id,
         phone: passenger.phone,
         medicaid: passenger.medicaid ?? '',
-        pickup: passenger.lastPickup ?? '',
-        dropoff: passenger.lastDropoff ?? '',
         payer: passenger.medicaid ? 'Medicaid' : 'Private',
       }));
+    } else {
+      setForm(prev => ({ ...prev, passengerId: '' }));
     }
   };
 
   const handleSubmit = () => {
+    let passengerId = form.passengerId;
+    if (!passengerId) {
+      passengerId = `p-${Date.now()}`;
+      const newPassenger: Passenger = {
+        id: passengerId,
+        name: passengerName,
+        phone: form.phone,
+        medicaid: form.medicaid || undefined,
+        lastPickup: form.pickup,
+        lastDropoff: form.dropoff,
+      };
+      passengers.push(newPassenger);
+    }
+
     const newTrip: Trip = {
       id: `t-${Date.now()}`,
       invoice: invoice || `INV-${Date.now()}`,
       status: 'scheduled',
       ...form,
+      passengerId,
     };
     addTrip(newTrip);
     onClose();
@@ -83,16 +103,18 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
         <div className="space-y-4">
           <div>
             <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Passenger</label>
-            <select
+            <input
+              list="passenger-list"
               className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
-              value={form.passengerId}
+              value={passengerName}
               onChange={e => handlePassengerChange(e.target.value)}
-            >
-              <option value="">Select passenger</option>
+              placeholder="Select or type passenger"
+            />
+            <datalist id="passenger-list">
               {passengers.map(p => (
-                <option key={p.id} value={p.id}>{p.name}</option>
+                <option key={p.id} value={p.name} />
               ))}
-            </select>
+            </datalist>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
