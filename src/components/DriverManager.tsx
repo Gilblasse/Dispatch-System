@@ -58,35 +58,35 @@ export const DriverManager: React.FC<Props> = ({ drivers, addDriver, updateDrive
 
   const renderRowInputs = (data: Driver, onChange: (d: Driver) => void, save: () => void, cancel: () => void) => (
     <tr>
-      <td className="p-2">
+      <td className="p-2 w-1/6">
         <input
           className="border rounded p-1 w-full bg-gray-50 dark:bg-gray-700"
           value={data.name}
           onChange={e => onChange({ ...data, name: e.target.value })}
         />
       </td>
-      <td className="p-2">
+      <td className="p-2 w-1/6">
         <input
           className="border rounded p-1 w-full bg-gray-50 dark:bg-gray-700"
           value={data.phone}
           onChange={e => onChange({ ...data, phone: e.target.value })}
         />
       </td>
-      <td className="p-2">
+      <td className="p-2 w-1/6">
         <input
           className="border rounded p-1 w-full bg-gray-50 dark:bg-gray-700"
           value={data.email}
           onChange={e => onChange({ ...data, email: e.target.value })}
         />
       </td>
-      <td className="p-2">
+      <td className="p-2 w-1/6">
         <input
           className="border rounded p-1 w-full bg-gray-50 dark:bg-gray-700"
           value={data.license}
           onChange={e => onChange({ ...data, license: e.target.value })}
         />
       </td>
-      <td className="p-2">
+      <td className="p-2 w-1/6">
         <input
           type="date"
           className="border rounded p-1 w-full bg-gray-50 dark:bg-gray-700"
@@ -94,7 +94,7 @@ export const DriverManager: React.FC<Props> = ({ drivers, addDriver, updateDrive
           onChange={e => onChange({ ...data, licenseExpiration: e.target.value })}
         />
       </td>
-      <td className="p-2 flex space-x-1">
+      <td className="p-2 w-1/6 flex space-x-1">
         <button className="text-green-600" onClick={save} title="Save">✔️</button>
         <button className="text-red-600" onClick={cancel} title="Cancel">✖️</button>
       </td>
@@ -107,15 +107,15 @@ export const DriverManager: React.FC<Props> = ({ drivers, addDriver, updateDrive
       <button className="mb-2 px-4 py-2 bg-blue-600 text-white rounded" onClick={handleAddRow}>
         Add Driver
       </button>
-      <table className="min-w-full w-full table-auto">
+      <table className="min-w-full w-full table-fixed">
         <thead>
           <tr className="text-left text-gray-700 dark:text-gray-200">
-            <th className="p-2">Name</th>
-            <th className="p-2">Phone</th>
-            <th className="p-2">Email</th>
-            <th className="p-2">License</th>
-            <th className="p-2">Expiration</th>
-            <th className="p-2" />
+            <th className="p-2 w-1/6">Name</th>
+            <th className="p-2 w-1/6">Phone</th>
+            <th className="p-2 w-1/6">Email</th>
+            <th className="p-2 w-1/6">License</th>
+            <th className="p-2 w-1/6">Expiration</th>
+            <th className="p-2 w-1/6" />
           </tr>
         </thead>
         <tbody>
@@ -124,12 +124,12 @@ export const DriverManager: React.FC<Props> = ({ drivers, addDriver, updateDrive
               renderRowInputs(editData, setEditData, handleSaveEdit, handleCancelEdit)
             ) : (
               <tr key={d.id} className="text-gray-700 dark:text-gray-200">
-                <td className="p-2">{d.name}</td>
-                <td className="p-2">{d.phone}</td>
-                <td className="p-2">{d.email}</td>
-                <td className="p-2">{d.license}</td>
-                <td className="p-2">{d.licenseExpiration}</td>
-                <td className="p-2">
+                <td className="p-2 w-1/6 break-words">{d.name}</td>
+                <td className="p-2 w-1/6 break-words">{d.phone}</td>
+                <td className="p-2 w-1/6 break-words">{d.email}</td>
+                <td className="p-2 w-1/6 break-words">{d.license}</td>
+                <td className="p-2 w-1/6 break-words">{d.licenseExpiration}</td>
+                <td className="p-2 w-1/6">
                   <button className="text-blue-600" onClick={() => handleEdit(d)} title="Edit">
                     ✏️
                   </button>
