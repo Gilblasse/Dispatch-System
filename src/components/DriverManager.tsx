@@ -119,8 +119,6 @@ export const DriverManager: React.FC<Props> = ({ drivers, addDriver, updateDrive
           </tr>
         </thead>
         <tbody>
-          {newDriver &&
-            renderRowInputs(newDriver, setNewDriver, handleSaveNew, handleCancelNew)}
           {drivers.map(d =>
             editingId === d.id && editData ? (
               renderRowInputs(editData, setEditData, handleSaveEdit, handleCancelEdit)
@@ -132,13 +130,15 @@ export const DriverManager: React.FC<Props> = ({ drivers, addDriver, updateDrive
                 <td className="p-2">{d.license}</td>
                 <td className="p-2">{d.licenseExpiration}</td>
                 <td className="p-2">
-                  <button className="text-blue-600" onClick={() => handleEdit(d)}>
-                    Edit
+                  <button className="text-blue-600" onClick={() => handleEdit(d)} title="Edit">
+                    ✏️
                   </button>
                 </td>
               </tr>
             )
           )}
+          {newDriver &&
+            renderRowInputs(newDriver, setNewDriver, handleSaveNew, handleCancelNew)}
         </tbody>
       </table>
     </div>
