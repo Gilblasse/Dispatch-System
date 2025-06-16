@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Passenger, Driver, Vehicle, Trip } from '../types';
+import { AutocompleteInput } from './AutocompleteInput';
 
 interface Props {
   open: boolean;
@@ -109,30 +110,14 @@ export const AddTripModal: React.FC<Props> = ({
       if (existing) {
         const trimmed = phones.filter(p => p.trim() !== '');
         const phoneSet = Array.from(new Set([...existing.phone, ...trimmed]));
-        const pickupChanged = form.pickup && form.pickup !== existing.lastPickup;
-        const dropoffChanged =
-          form.dropoff && form.dropoff !== existing.lastDropoff;
-        if (
-          phoneSet.length !== existing.phone.length ||
-          pickupChanged ||
-          dropoffChanged
-        ) {
-          updatePassenger({
-            ...existing,
-            phone: phoneSet,
-            lastPickup: pickupChanged ? form.pickup : existing.lastPickup,
-            lastDropoff: dropoffChanged ? form.dropoff : existing.lastDropoff,
-          });
+        const newAddrs = [form.pickup, form.dropoff].filter(
+          a => a.trim() && !existing.addresses.includes(a)
+        );
+        const addresses = [...existing.addresses, ...newAddrs];
+        if (phoneSet.length !== existing.phone.length || newAddrs.length > 0) {
+          updatePassenger({ ...existing, phone: phoneSet, addresses });
         }
       }
-    }
-    const existingPassenger = passengers.find(p => p.id === passengerId);
-    if (existingPassenger) {
-      [form.pickup, form.dropoff].forEach(addr => {
-        if (addr.trim() && !existingPassenger.addresses.includes(addr)) {
-          existingPassenger.addresses.push(addr);
-        }
-      });
     }
 
     const newTrip: Trip = {
@@ -166,30 +151,26 @@ export const AddTripModal: React.FC<Props> = ({
         <div className="space-y-4">
           <div>
             <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Passenger</label>
-            <input
-              list="passenger-list"
+            <AutocompleteInput
+              suggestions={passengers.map(p => p.name)}
               className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
               value={passengerName}
-              onChange={e => handlePassengerChange(e.target.value)}
+              onChange={handlePassengerChange}
               placeholder="Select or type passenger"
             />
-            <datalist id="passenger-list">
-              {passengers.map(p => (
-                <option key={p.id} value={p.name} />
-              ))}
-            </datalist>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Phone</label>
               {phones.map((p, idx) => (
                 <div key={idx} className="flex items-center mb-2">
-                  <input
+                  <AutocompleteInput
                     type="text"
-                    list={`phone-list-${idx}`}
+                    suggestions={selectedPassenger?.phone || []}
                     className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
                     value={p}
-                    onChange={e => handlePhoneChange(idx, e.target.value)}
+                    onChange={val => handlePhoneChange(idx, val)}
+                    placeholder="Phone number"
                   />
                   {phones.length > 1 && (
                     <button
@@ -200,11 +181,6 @@ export const AddTripModal: React.FC<Props> = ({
                       Remove
                     </button>
                   )}
-                  <datalist id={`phone-list-${idx}`}>
-                    {(selectedPassenger?.phone || []).map(num => (
-                      <option key={num} value={num} />
-                    ))}
-                  </datalist>
                 </div>
               ))}
               <button
@@ -241,30 +217,27 @@ export const AddTripModal: React.FC<Props> = ({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Pickup</label>
-              <input
+              <AutocompleteInput
                 type="text"
-                list="address-list"
+                suggestions={selectedPassenger?.addresses || []}
                 className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
                 value={form.pickup}
-                onChange={e => setForm({ ...form, pickup: e.target.value })}
+                onChange={val => setForm({ ...form, pickup: val })}
+                placeholder="Pickup address"
               />
             </div>
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Dropoff</label>
-              <input
+              <AutocompleteInput
                 type="text"
-                list="address-list"
+                suggestions={selectedPassenger?.addresses || []}
                 className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
                 value={form.dropoff}
-                onChange={e => setForm({ ...form, dropoff: e.target.value })}
+                onChange={val => setForm({ ...form, dropoff: val })}
+                placeholder="Dropoff address"
               />
             </div>
           </div>
-          <datalist id="address-list">
-            {(selectedPassenger?.addresses || []).map(addr => (
-              <option key={addr} value={addr} />
-            ))}
-          </datalist>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Date</label>
