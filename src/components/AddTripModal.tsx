@@ -54,10 +54,12 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
         phone: passenger.phone[0] || '',
         medicaid: passenger.medicaid ?? '',
         payer: passenger.medicaid ? 'Medicaid' : 'Private',
+        pickup: '',
+        dropoff: '',
       }));
       setPhones(passenger.phone.slice());
     } else {
-      setForm(prev => ({ ...prev, passengerId: '' }));
+      setForm(prev => ({ ...prev, passengerId: '', pickup: '', dropoff: '' }));
       setPhones(['']);
     }
   };
@@ -88,10 +90,17 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
         name: passengerName,
         phone: phones.filter(p => p.trim() !== ''),
         medicaid: form.medicaid || undefined,
-        lastPickup: form.pickup,
-        lastDropoff: form.dropoff,
+        addresses: [form.pickup, form.dropoff].filter(a => a.trim() !== ''),
       };
       passengers.push(newPassenger);
+    }
+    const existingPassenger = passengers.find(p => p.id === passengerId);
+    if (existingPassenger) {
+      [form.pickup, form.dropoff].forEach(addr => {
+        if (addr.trim() && !existingPassenger.addresses.includes(addr)) {
+          existingPassenger.addresses.push(addr);
+        }
+      });
     }
 
     const newTrip: Trip = {
@@ -202,6 +211,7 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Pickup</label>
               <input
                 type="text"
+                list="address-list"
                 className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
                 value={form.pickup}
                 onChange={e => setForm({ ...form, pickup: e.target.value })}
@@ -211,12 +221,18 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Dropoff</label>
               <input
                 type="text"
+                list="address-list"
                 className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
                 value={form.dropoff}
                 onChange={e => setForm({ ...form, dropoff: e.target.value })}
               />
             </div>
           </div>
+          <datalist id="address-list">
+            {(selectedPassenger?.addresses || []).map(addr => (
+              <option key={addr} value={addr} />
+            ))}
+          </datalist>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Date</label>

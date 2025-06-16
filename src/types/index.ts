@@ -3,8 +3,7 @@ export interface Passenger {
   name: string;
   phone: string[];
   medicaid?: string;
-  lastPickup?: string;
-  lastDropoff?: string;
+  addresses: string[];
 }
 
 export interface Driver {
