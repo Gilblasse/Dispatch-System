@@ -12,7 +12,7 @@ All data is kept in local state and there is no backend. Use the dark mode butto
 
 ### Passenger input
 
-The "Add Trip" modal uses HTML `datalist` elements to make entering passenger
+The "Add Trip" modal uses a custom `AutocompleteInput` component to make entering passenger
 information easier. Passenger names can be selected from the list or typed to
 create a new passenger. Phone numbers are managed as multiple fields with
 "Add Phone"/"Remove" controls and suggestions from the selected passenger. The

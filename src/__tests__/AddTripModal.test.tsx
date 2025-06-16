@@ -20,7 +20,7 @@ describe('AddTripModal', () => {
     expect(screen.getByText(/Medicaid ID/i)).toBeInTheDocument();
   });
 
-  it('shows datalist suggestions for passenger, phone and address', async () => {
+  it('shows autocomplete suggestions for passenger, phone and address', async () => {
     const passengers = [
       { id: 'p1', name: 'John Doe', phone: ['555-0101'], addresses: ['123 Main St'] },
       { id: 'p2', name: 'Jane Smith', phone: ['555-0202'], addresses: ['456 Oak Ave'] },
@@ -38,16 +38,22 @@ describe('AddTripModal', () => {
       />
     );
 
-    // passenger suggestions
-    expect(document.querySelector('datalist#passenger-list option[value="John Doe"]')).toBeInTheDocument();
-    expect(document.querySelector('datalist#passenger-list option[value="Jane Smith"]')).toBeInTheDocument();
-
     const passengerInput = screen.getByPlaceholderText(/select or type passenger/i);
-    await userEvent.type(passengerInput, 'John Doe');
+    await userEvent.type(passengerInput, 'J');
+    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+    await userEvent.click(screen.getByText('John Doe'));
 
+    const phoneInput = screen.getByPlaceholderText('Phone number');
+    await userEvent.click(phoneInput);
     await waitFor(() => {
-      expect(document.querySelector('datalist#phone-list-0 option[value="555-0101"]')).toBeInTheDocument();
-      expect(document.querySelector('datalist#address-list option[value="123 Main St"]')).toBeInTheDocument();
+      expect(screen.getByText('555-0101')).toBeInTheDocument();
+    });
+
+    const pickupInput = screen.getByPlaceholderText('Pickup address');
+    await userEvent.click(pickupInput);
+    await waitFor(() => {
+      expect(screen.getByText('123 Main St')).toBeInTheDocument();
     });
   });
 
@@ -70,7 +76,7 @@ describe('AddTripModal', () => {
 
     const passengerInput = screen.getByPlaceholderText(/select or type passenger/i);
     await userEvent.type(passengerInput, 'New Rider');
-    const phoneInput = document.querySelector('input[list="phone-list-0"]') as HTMLInputElement;
+    const phoneInput = screen.getByPlaceholderText('Phone number');
     await userEvent.type(phoneInput, '555-9999');
 
     await userEvent.click(screen.getByText(/save/i));
@@ -104,22 +110,22 @@ describe('AddTripModal', () => {
     await userEvent.type(passengerInput, 'John Doe');
 
     await userEvent.click(screen.getByText(/add phone/i));
-    const phoneInputs = document.querySelectorAll('input[list^="phone-list-"]');
-    await userEvent.type(phoneInputs[1] as HTMLInputElement, '555-0202');
+    const phoneInputs = screen.getAllByPlaceholderText('Phone number');
+    await userEvent.type(phoneInputs[1], '555-0202');
 
-    const pickupInput = document.querySelectorAll('input[list="address-list"]')[0] as HTMLInputElement;
+    const pickupInput = screen.getByPlaceholderText('Pickup address');
     await userEvent.type(pickupInput, '789 Pine Rd');
 
     await userEvent.click(screen.getByText(/save/i));
 
     expect(updatePassenger).toHaveBeenCalledTimes(1);
+    expect(updatePassenger).toHaveBeenCalledTimes(1);
     expect(updatePassenger.mock.calls[0][0]).toEqual(
       expect.objectContaining({
         id: 'p1',
         phone: ['555-0101', '555-0202'],
-        lastPickup: '789 Pine Rd',
+        addresses: expect.arrayContaining(['123 Main St', '789 Pine Rd']),
       })
     );
-    expect(passengers[0].addresses).toContain('789 Pine Rd');
   });
 });
