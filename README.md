@@ -12,11 +12,11 @@ All data is kept in local state and there is no backend. Use the dark mode butto
 
 ## Development
 
-Install dependencies and start the dev server using Yarn:
+Install dependencies and start the dev server using npm:
 
 ```bash
-yarn install
-yarn start
+npm install
+npm start
 ```
 
 This runs a Vite powered React + TypeScript app at `http://localhost:3000`.
@@ -24,5 +24,5 @@ This runs a Vite powered React + TypeScript app at `http://localhost:3000`.
 To verify type safety, run the TypeScript compiler without emitting files:
 
 ```bash
-yarn tsc
+npm run tsc
 ```
