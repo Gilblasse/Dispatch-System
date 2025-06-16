@@ -39,6 +39,7 @@ export const AddTripModal: React.FC<Props> = ({
 }) => {
   const [form, setForm] = useState(defaultTrip);
   const [invoice, setInvoice] = useState('');
+  const [notes, setNotes] = useState('');
   const [passengerName, setPassengerName] = useState('');
   const [phones, setPhones] = useState<string[]>(['']);
 
@@ -49,6 +50,7 @@ export const AddTripModal: React.FC<Props> = ({
       document.body.style.overflow = '';
       setForm(defaultTrip);
       setInvoice('');
+      setNotes('');
       setPassengerName('');
       setPhones(['']);
     }
@@ -94,6 +96,22 @@ export const AddTripModal: React.FC<Props> = ({
   const selectedPassenger = passengers.find(p => p.id === form.passengerId);
 
   const handleSubmit = () => {
+    if (!passengerName && !form.passengerId) {
+      alert('Passenger is required');
+      return;
+    }
+    if (!form.payer) {
+      alert('Payer is required');
+      return;
+    }
+    if (form.payer === 'Medicaid' && !form.medicaid) {
+      alert('Medicaid ID is required');
+      return;
+    }
+    if (!form.date) {
+      alert('Date is required');
+      return;
+    }
     let passengerId = form.passengerId;
     if (!passengerId) {
       passengerId = `p-${Date.now()}`;
@@ -126,6 +144,7 @@ export const AddTripModal: React.FC<Props> = ({
       status: 'scheduled',
       ...form,
       phone: phones[0] || '',
+      notes: notes || undefined,
       passengerId,
     };
     addTrip(newTrip);
@@ -214,6 +233,23 @@ export const AddTripModal: React.FC<Props> = ({
               />
             </div>
           )}
+          <div>
+            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Invoice</label>
+            <input
+              type="text"
+              className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
+              value={invoice}
+              onChange={e => setInvoice(e.target.value)}
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Notes</label>
+            <textarea
+              className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
+              value={notes}
+              onChange={e => setNotes(e.target.value)}
+            />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Pickup</label>
@@ -298,15 +334,6 @@ export const AddTripModal: React.FC<Props> = ({
               <option value="Taxi">Taxi</option>
               <option value="Stretcher">Stretcher</option>
             </select>
-          </div>
-          <div>
-            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Invoice</label>
-            <input
-              type="text"
-              className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
-              value={invoice}
-              onChange={e => setInvoice(e.target.value)}
-            />
           </div>
           <div className="flex justify-end space-x-2 pt-4">
             <button

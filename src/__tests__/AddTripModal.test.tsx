@@ -61,7 +61,7 @@ describe('AddTripModal', () => {
     const addPassenger = jest.fn();
     const addTrip = jest.fn();
 
-    render(
+    const { container } = render(
       <AddTripModal
         open={true}
         onClose={() => {}}
@@ -72,12 +72,17 @@ describe('AddTripModal', () => {
         addPassenger={addPassenger}
         updatePassenger={() => {}}
       />
-    );
+      );
 
     const passengerInput = screen.getByPlaceholderText(/select or type passenger/i);
     await userEvent.type(passengerInput, 'New Rider');
     const phoneInput = screen.getByPlaceholderText('Phone number');
     await userEvent.type(phoneInput, '555-9999');
+    // Select payer and set date to satisfy validation
+    const payerSelect = screen.getAllByRole('combobox')[0];
+    await userEvent.selectOptions(payerSelect, 'Private');
+    const dateInput = container.querySelector('input[type="date"]') as HTMLInputElement;
+    await userEvent.type(dateInput, '2023-10-10');
 
     await userEvent.click(screen.getByText(/save/i));
 
@@ -93,7 +98,7 @@ describe('AddTripModal', () => {
     ];
     const updatePassenger = jest.fn();
 
-    render(
+    const { container } = render(
       <AddTripModal
         open={true}
         onClose={() => {}}
@@ -112,6 +117,10 @@ describe('AddTripModal', () => {
     await userEvent.click(screen.getByText(/add phone/i));
     const phoneInputs = screen.getAllByPlaceholderText('Phone number');
     await userEvent.type(phoneInputs[1], '555-0202');
+    const payerSelect2 = screen.getAllByRole('combobox')[0];
+    await userEvent.selectOptions(payerSelect2, 'Private');
+    const dateInput2 = container.querySelector('input[type="date"]') as HTMLInputElement;
+    await userEvent.type(dateInput2, '2023-10-10');
 
     const pickupInput = screen.getByPlaceholderText('Pickup address');
     await userEvent.type(pickupInput, '789 Pine Rd');

@@ -41,6 +41,7 @@ export interface Trip {
   transport: 'Ambulatory' | 'Wheelchair' | 'Taxi' | 'Stretcher';
   phone: string;
   medicaid?: string;
+  notes?: string;
   invoice: string;
   status: TripStatus;
 }
