@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "test": "echo 'No tests specified'",
-    "start": "vite",
-    "tsc": "tsc --noEmit"
-  },
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
