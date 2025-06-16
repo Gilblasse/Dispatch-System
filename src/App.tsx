@@ -8,12 +8,16 @@ import {
 import { Trip, Driver, Passenger } from './types';
 import { DispatcherDashboard } from './components/DispatcherDashboard';
 import { DriverManager } from './components/DriverManager';
+import { Sidebar, ViewOption } from './components/Sidebar';
+import { PassengerList } from './components/PassengerList';
+import { VehicleList } from './components/VehicleList';
 
 export const App: React.FC = () => {
   const [trips, setTrips] = useState<Trip[]>(initialTrips);
   const [drivers, setDrivers] = useState<Driver[]>(initialDrivers);
   const [passengers, setPassengers] = useState<Passenger[]>(initialPassengers);
   const [dark, setDark] = useState(false);
+  const [view, setView] = useState<ViewOption>('dashboard');
 
   useEffect(() => {
     const root = document.documentElement;
@@ -84,26 +88,37 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-4 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Dispatcher Dashboard</h1>
-        <button
-          className="px-2 py-1 text-sm rounded border bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200"
-          onClick={() => setDark(!dark)}
-        >
-          {dark ? 'Light' : 'Dark'} Mode
-        </button>
-      </div>
-      <DispatcherDashboard
-        trips={trips}
-        drivers={drivers}
-        vehicles={vehicles}
-        passengers={passengers}
-        addTrip={addTrip}
-        addPassenger={addPassenger}
-        updatePassenger={updatePassenger}
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
+      <Sidebar
+        current={view}
+        onSelect={setView}
+        dark={dark}
+        toggleDark={() => setDark(!dark)}
       />
-      <DriverManager drivers={drivers} addDriver={addDriver} />
+      <main className="flex-1 p-4 space-y-6">
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Dispatcher Dashboard</h1>
+        {(view === 'dashboard' || view === 'trips') && (
+          <DispatcherDashboard
+            trips={trips}
+            drivers={drivers}
+            vehicles={vehicles}
+            passengers={passengers}
+            addTrip={addTrip}
+            addPassenger={addPassenger}
+            updatePassenger={updatePassenger}
+          />
+        )}
+        {(view === 'dashboard' || view === 'drivers') && (
+          <DriverManager drivers={drivers} addDriver={addDriver} />
+        )}
+        {view === 'passengers' && <PassengerList passengers={passengers} />}
+        {view === 'vehicles' && <VehicleList vehicles={vehicles} />}
+        {view === 'settings' && (
+          <div className="bg-white dark:bg-gray-800 p-4 rounded shadow text-gray-700 dark:text-gray-200">
+            Use the sidebar to toggle dark mode.
+          </div>
+        )}
+      </main>
     </div>
   );
 };
