@@ -77,6 +77,10 @@ export const App: React.FC = () => {
     setDrivers(prev => [...prev, driver]);
   };
 
+  const updateDriver = (driver: Driver) => {
+    setDrivers(prev => prev.map(d => (d.id === driver.id ? driver : d)));
+  };
+
   const addPassenger = (passenger: Passenger) => {
     setPassengers(prev => [...prev, passenger]);
   };
@@ -109,7 +113,11 @@ export const App: React.FC = () => {
           />
         )}
         {(view === 'dashboard' || view === 'drivers') && (
-          <DriverManager drivers={drivers} addDriver={addDriver} />
+          <DriverManager
+            drivers={drivers}
+            addDriver={addDriver}
+            updateDriver={updateDriver}
+          />
         )}
         {view === 'passengers' && <PassengerList passengers={passengers} />}
         {view === 'vehicles' && <VehicleList vehicles={vehicles} />}
