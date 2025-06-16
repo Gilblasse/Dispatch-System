@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Passenger, Driver, Vehicle, Trip } from '../types';
-import { passengers } from '../data/mockData';
 
 interface Props {
   open: boolean;
   onClose: () => void;
   drivers: Driver[];
   vehicles: Vehicle[];
+  passengers: Passenger[];
   addTrip: (trip: Trip) => void;
+  addPassenger: (p: Passenger) => void;
+  updatePassenger: (p: Passenger) => void;
 }
 
 const defaultTrip: Omit<Trip, 'id' | 'invoice' | 'status'> = {
@@ -24,7 +26,16 @@ const defaultTrip: Omit<Trip, 'id' | 'invoice' | 'status'> = {
   medicaid: '',
 };
 
-export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles, addTrip }) => {
+export const AddTripModal: React.FC<Props> = ({
+  open,
+  onClose,
+  drivers,
+  vehicles,
+  passengers,
+  addTrip,
+  addPassenger,
+  updatePassenger,
+}) => {
   const [form, setForm] = useState(defaultTrip);
   const [invoice, setInvoice] = useState('');
   const [passengerName, setPassengerName] = useState('');
@@ -91,7 +102,28 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
         lastPickup: form.pickup,
         lastDropoff: form.dropoff,
       };
-      passengers.push(newPassenger);
+      addPassenger(newPassenger);
+    } else {
+      const existing = passengers.find(p => p.id === passengerId);
+      if (existing) {
+        const trimmed = phones.filter(p => p.trim() !== '');
+        const phoneSet = Array.from(new Set([...existing.phone, ...trimmed]));
+        const pickupChanged = form.pickup && form.pickup !== existing.lastPickup;
+        const dropoffChanged =
+          form.dropoff && form.dropoff !== existing.lastDropoff;
+        if (
+          phoneSet.length !== existing.phone.length ||
+          pickupChanged ||
+          dropoffChanged
+        ) {
+          updatePassenger({
+            ...existing,
+            phone: phoneSet,
+            lastPickup: pickupChanged ? form.pickup : existing.lastPickup,
+            lastDropoff: dropoffChanged ? form.dropoff : existing.lastDropoff,
+          });
+        }
+      }
     }
 
     const newTrip: Trip = {

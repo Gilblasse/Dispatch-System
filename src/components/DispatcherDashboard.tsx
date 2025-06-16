@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
-import { Trip, Driver, Vehicle } from '../types';
-import { passengers } from '../data/mockData';
+import { Trip, Driver, Vehicle, Passenger } from '../types';
+
 import { AddTripModal } from './AddTripModal';
 
 interface Props {
   trips: Trip[];
   drivers: Driver[];
   vehicles: Vehicle[];
+  passengers: Passenger[];
   addTrip: (trip: Trip) => void;
+  addPassenger: (p: Passenger) => void;
+  updatePassenger: (p: Passenger) => void;
 }
 
-export const DispatcherDashboard: React.FC<Props> = ({ trips, drivers, vehicles, addTrip }) => {
+export const DispatcherDashboard: React.FC<Props> = ({
+  trips,
+  drivers,
+  vehicles,
+  passengers,
+  addTrip,
+  addPassenger,
+  updatePassenger,
+}) => {
   const [filterDriver, setFilterDriver] = useState('');
   const [filterDate, setFilterDate] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -84,7 +95,10 @@ export const DispatcherDashboard: React.FC<Props> = ({ trips, drivers, vehicles,
         onClose={() => setModalOpen(false)}
         drivers={drivers}
         vehicles={vehicles}
+        passengers={passengers}
         addTrip={addTrip}
+        addPassenger={addPassenger}
+        updatePassenger={updatePassenger}
       />
     </div>
   );

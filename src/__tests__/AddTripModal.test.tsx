@@ -10,7 +10,10 @@ describe('AddTripModal', () => {
         onClose={() => {}}
         drivers={[]}
         vehicles={[]}
+        passengers={[]}
         addTrip={() => {}}
+        addPassenger={() => {}}
+        updatePassenger={() => {}}
       />
     );
     expect(screen.getByText(/Medicaid ID/i)).toBeInTheDocument();
