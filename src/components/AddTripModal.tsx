@@ -95,6 +95,13 @@ export const AddTripModal: React.FC<Props> = ({
 
   const selectedPassenger = passengers.find(p => p.id === form.passengerId);
 
+  const isFormValid = Boolean(
+    (passengerName || form.passengerId) &&
+      form.payer &&
+      (form.payer === 'Private' || form.medicaid) &&
+      form.date
+  );
+
   const handleSubmit = () => {
     if (!passengerName && !form.passengerId) {
       alert('Passenger is required');
@@ -169,7 +176,9 @@ export const AddTripModal: React.FC<Props> = ({
         </h2>
         <div className="space-y-4">
           <div>
-            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Passenger</label>
+            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">
+              Passenger<span className="text-red-500 ml-0.5">*</span>
+            </label>
             <AutocompleteInput
               suggestions={passengers.map(p => p.name)}
               className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
@@ -211,7 +220,9 @@ export const AddTripModal: React.FC<Props> = ({
               </button>
             </div>
             <div>
-              <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Payer</label>
+              <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">
+                Payer<span className="text-red-500 ml-0.5">*</span>
+              </label>
               <select
                 className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
                 value={form.payer}
@@ -224,7 +235,9 @@ export const AddTripModal: React.FC<Props> = ({
           </div>
           {form.payer === 'Medicaid' && (
             <div>
-              <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Medicaid ID</label>
+              <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">
+                Medicaid ID<span className="text-red-500 ml-0.5">*</span>
+              </label>
               <input
                 type="text"
                 className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
@@ -233,6 +246,19 @@ export const AddTripModal: React.FC<Props> = ({
               />
             </div>
           )}
+          <div>
+            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Transport</label>
+            <select
+              className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
+              value={form.transport}
+              onChange={e => setForm({ ...form, transport: e.target.value as Trip['transport'] })}
+            >
+              <option value="Ambulatory">Ambulatory</option>
+              <option value="Wheelchair">Wheelchair</option>
+              <option value="Taxi">Taxi</option>
+              <option value="Stretcher">Stretcher</option>
+            </select>
+          </div>
           <div>
             <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Invoice</label>
             <input
@@ -276,7 +302,9 @@ export const AddTripModal: React.FC<Props> = ({
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Date</label>
+              <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">
+                Date<span className="text-red-500 ml-0.5">*</span>
+              </label>
               <input
                 type="date"
                 className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
@@ -322,19 +350,6 @@ export const AddTripModal: React.FC<Props> = ({
               </select>
             </div>
           </div>
-          <div>
-            <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Transport</label>
-            <select
-              className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
-              value={form.transport}
-              onChange={e => setForm({ ...form, transport: e.target.value as Trip['transport'] })}
-            >
-              <option value="Ambulatory">Ambulatory</option>
-              <option value="Wheelchair">Wheelchair</option>
-              <option value="Taxi">Taxi</option>
-              <option value="Stretcher">Stretcher</option>
-            </select>
-          </div>
           <div className="flex justify-end space-x-2 pt-4">
             <button
               className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
@@ -343,8 +358,11 @@ export const AddTripModal: React.FC<Props> = ({
               Cancel
             </button>
             <button
-              className="px-4 py-2 rounded bg-blue-600 text-white"
+              className={`px-4 py-2 rounded text-white bg-blue-600 ${
+                isFormValid ? '' : 'opacity-50 cursor-not-allowed'
+              }`}
               onClick={handleSubmit}
+              disabled={!isFormValid}
             >
               Save
             </button>
