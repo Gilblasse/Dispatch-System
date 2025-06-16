@@ -99,7 +99,7 @@ export const App: React.FC = () => {
         dark={dark}
         toggleDark={() => setDark(!dark)}
       />
-      <main className="flex-1 p-4 space-y-6">
+      <main className="w-screen p-4 space-y-6">
         <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Dispatcher Dashboard</h1>
         {(view === 'dashboard' || view === 'trips') && (
           <DispatcherDashboard
