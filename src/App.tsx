@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { trips as initialTrips, drivers as initialDrivers, vehicles } from './data/mockData';
+import {
+  trips as initialTrips,
+  drivers as initialDrivers,
+  vehicles,
+} from './data/mockData';
 import { Trip, Driver } from './types';
 import { DispatcherDashboard } from './components/DispatcherDashboard';
 import { DriverManager } from './components/DriverManager';
@@ -14,6 +18,37 @@ export const App: React.FC = () => {
     if (dark) root.classList.add('dark');
     else root.classList.remove('dark');
   }, [dark]);
+
+  // Load persisted trips and drivers on first render
+  useEffect(() => {
+    const storedTrips = localStorage.getItem('trips');
+    const storedDrivers = localStorage.getItem('drivers');
+
+    if (storedTrips) {
+      try {
+        setTrips(JSON.parse(storedTrips));
+      } catch {
+        // ignore parse errors and keep defaults
+      }
+    }
+
+    if (storedDrivers) {
+      try {
+        setDrivers(JSON.parse(storedDrivers));
+      } catch {
+        // ignore parse errors and keep defaults
+      }
+    }
+  }, []);
+
+  // Persist trips and drivers whenever they change
+  useEffect(() => {
+    localStorage.setItem('trips', JSON.stringify(trips));
+  }, [trips]);
+
+  useEffect(() => {
+    localStorage.setItem('drivers', JSON.stringify(drivers));
+  }, [drivers]);
 
   const addTrip = (trip: Trip) => {
     setTrips(prev => [...prev, trip]);
