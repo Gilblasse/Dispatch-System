@@ -28,6 +28,7 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
   const [form, setForm] = useState(defaultTrip);
   const [invoice, setInvoice] = useState('');
   const [passengerName, setPassengerName] = useState('');
+  const [phones, setPhones] = useState<string[]>(['']);
 
   useEffect(() => {
     if (open) {
@@ -37,6 +38,7 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
       setForm(defaultTrip);
       setInvoice('');
       setPassengerName('');
+      setPhones(['']);
     }
   }, [open]);
 
@@ -49,14 +51,33 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
       setForm(prev => ({
         ...prev,
         passengerId: passenger.id,
-        phone: passenger.phone,
+        phone: passenger.phone[0] || '',
         medicaid: passenger.medicaid ?? '',
         payer: passenger.medicaid ? 'Medicaid' : 'Private',
       }));
+      setPhones(passenger.phone.slice());
     } else {
       setForm(prev => ({ ...prev, passengerId: '' }));
+      setPhones(['']);
     }
   };
+
+  const handlePhoneChange = (index: number, value: string) => {
+    const updated = [...phones];
+    updated[index] = value;
+    setPhones(updated);
+    setForm(prev => ({ ...prev, phone: updated[0] || '' }));
+  };
+
+  const addPhoneField = () => setPhones(prev => [...prev, '']);
+
+  const removePhoneField = (index: number) => {
+    const updated = phones.filter((_, i) => i !== index);
+    setPhones(updated.length ? updated : ['']);
+    setForm(prev => ({ ...prev, phone: (updated[0] || '') }));
+  };
+
+  const selectedPassenger = passengers.find(p => p.id === form.passengerId);
 
   const handleSubmit = () => {
     let passengerId = form.passengerId;
@@ -65,7 +86,7 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
       const newPassenger: Passenger = {
         id: passengerId,
         name: passengerName,
-        phone: form.phone,
+        phone: phones.filter(p => p.trim() !== ''),
         medicaid: form.medicaid || undefined,
         lastPickup: form.pickup,
         lastDropoff: form.dropoff,
@@ -78,6 +99,7 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
       invoice: invoice || `INV-${Date.now()}`,
       status: 'scheduled',
       ...form,
+      phone: phones[0] || '',
       passengerId,
     };
     addTrip(newTrip);
@@ -119,12 +141,38 @@ export const AddTripModal: React.FC<Props> = ({ open, onClose, drivers, vehicles
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Phone</label>
-              <input
-                type="text"
-                className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
-                value={form.phone}
-                onChange={e => setForm({ ...form, phone: e.target.value })}
-              />
+              {phones.map((p, idx) => (
+                <div key={idx} className="flex items-center mb-2">
+                  <input
+                    type="text"
+                    list={`phone-list-${idx}`}
+                    className="w-full border rounded p-2 bg-gray-50 dark:bg-gray-700"
+                    value={p}
+                    onChange={e => handlePhoneChange(idx, e.target.value)}
+                  />
+                  {phones.length > 1 && (
+                    <button
+                      type="button"
+                      className="ml-2 text-red-500"
+                      onClick={() => removePhoneField(idx)}
+                    >
+                      Remove
+                    </button>
+                  )}
+                  <datalist id={`phone-list-${idx}`}>
+                    {(selectedPassenger?.phone || []).map(num => (
+                      <option key={num} value={num} />
+                    ))}
+                  </datalist>
+                </div>
+              ))}
+              <button
+                type="button"
+                className="mt-1 text-sm text-blue-600"
+                onClick={addPhoneField}
+              >
+                Add Phone
+              </button>
             </div>
             <div>
               <label className="block text-sm mb-1 text-gray-700 dark:text-gray-300">Payer</label>

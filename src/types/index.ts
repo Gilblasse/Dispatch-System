@@ -1,7 +1,7 @@
 export interface Passenger {
   id: string;
   name: string;
-  phone: string;
+  phone: string[];
   medicaid?: string;
   lastPickup?: string;
   lastDropoff?: string;

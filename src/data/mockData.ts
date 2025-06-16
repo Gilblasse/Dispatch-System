@@ -4,7 +4,7 @@ export const passengers: Passenger[] = [
   {
     id: 'p1',
     name: 'John Doe',
-    phone: '555-0101',
+    phone: ['555-0101'],
     medicaid: 'M123456',
     lastPickup: '123 Main St',
     lastDropoff: '456 Oak Ave',
@@ -12,7 +12,7 @@ export const passengers: Passenger[] = [
   {
     id: 'p2',
     name: 'Jane Smith',
-    phone: '555-0202',
+    phone: ['555-0202'],
     medicaid: 'M654321',
     lastPickup: '789 Pine Rd',
     lastDropoff: '321 Elm St',
