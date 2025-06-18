@@ -108,3 +108,39 @@ test('shows pickup time when card is active', () => {
 
   expect(screen.getByText(/Pickup at 10:00/)).toBeInTheDocument();
 });
+
+test('shows transport icon when card is active', () => {
+  const trip: Trip = {
+    id: 't1',
+    driverId: 'd1',
+    status: 'pending',
+    passenger: 'John Doe',
+    from: 'A',
+    to: 'B',
+    time: '10:00',
+    date: '2024-01-01',
+    inTime: '09:45',
+    outTime: '10:15',
+    miles: 5,
+    transportType: 'Wheelchair',
+    phone: '555-0000',
+    medicaidNumber: 'MC-TEST',
+    invoiceNumber: 'INV-TEST',
+    pickupAddress: '123 A St',
+    dropoffAddress: '456 B Ave',
+    notes: 'n/a',
+  };
+  render(
+    <TripCard
+      trip={trip}
+      isActive={true}
+      onSelect={() => {}}
+      onPassengerFilter={() => {}}
+      onShowDetails={() => {}}
+    />
+  );
+
+  const icon = screen.getByLabelText('Wheelchair');
+  expect(icon).toBeInTheDocument();
+  expect(icon.querySelector('i')).toHaveClass('fa-wheelchair');
+});

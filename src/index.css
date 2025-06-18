@@ -166,6 +166,13 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
   border-top: 1px solid var(--border-color);
   font-size: 0.75rem;
   color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+}
+
+.transport-type-icon {
+  margin-left: auto;
+  color: var(--text-secondary);
 }
 
 .trip-details {

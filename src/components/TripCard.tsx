@@ -1,6 +1,19 @@
 import React from 'react';
 import { Trip } from '../mockData';
 
+function getTransportIcon(type: string): string {
+  switch (type.toLowerCase()) {
+    case 'ambulatory':
+      return 'fa-person-walking';
+    case 'wheelchair':
+      return 'fa-wheelchair';
+    case 'stretcher':
+      return 'fa-bed';
+    default:
+      return 'fa-car';
+  }
+}
+
 interface TripCardProps {
   trip: Trip;
   isActive: boolean;
@@ -49,7 +62,12 @@ export default function TripCard({
           <span>
             <i className="fas fa-clock"></i> Pickup at {trip.time}
           </span>
-          <span className="transport-type">{trip.transportType}</span>
+          <span
+            className="transport-type-icon"
+            aria-label={trip.transportType}
+          >
+            <i className={`fas ${getTransportIcon(trip.transportType)}`}></i>
+          </span>
         </div>
       )}
     </div>
