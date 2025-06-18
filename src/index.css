@@ -80,7 +80,43 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 .trip-card:hover, .driver-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); border-color: var(--accent-teal); }
 .trip-card.active, .driver-card.active { box-shadow: 0 0 0 2px var(--accent-teal) !important; border-color: var(--accent-teal) !important; }
 
-.trip-card { background: rgba(26, 29, 45, 0.6); padding: 15px; margin-bottom: 10px; display: flex; flex-direction: column; }
+.trip-card {
+  background: rgba(26, 29, 45, 0.6);
+  padding: 15px 15px 15px 20px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.trip-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--status-progress);
+  border-radius: 8px 0 0 8px;
+}
+
+.trip-card[data-status='pending']::before {
+  background-color: var(--status-urgent);
+}
+
+.trip-card[data-status='en-route']::before,
+.trip-card[data-status='in-transit']::before {
+  background-color: var(--status-progress);
+}
+
+.trip-card[data-status='at-pickup']::before {
+  background-color: var(--status-arrived);
+}
+
+.trip-card[data-status='complete']::before {
+  background-color: var(--status-complete);
+}
 .trip-header h3 { font-size: 1.1rem; cursor: pointer; transition: color 0.2s; display: inline-block; }
 .trip-header h3:hover { color: var(--accent-teal); }
 .trip-locations { margin-top: 10px; }

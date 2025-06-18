@@ -132,6 +132,7 @@ export default function App() {
                 <div
                   key={trip.id}
                   className={`trip-card ${isActive ? 'active' : ''}`}
+                  data-status={trip.status}
                   onClick={() => {
                     setFilterType('trip');
                     setFilterId(trip.id);
