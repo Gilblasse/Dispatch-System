@@ -49,6 +49,7 @@ export default function TripCard({
           <span>
             <i className="fas fa-clock"></i> Pickup at {trip.time}
           </span>
+          <span className="transport-type">{trip.transportType}</span>
         </div>
       )}
     </div>

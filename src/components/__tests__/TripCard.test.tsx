@@ -13,6 +13,17 @@ test('calls onSelect when card is clicked', () => {
     from: 'A',
     to: 'B',
     time: '10:00',
+    date: '2024-01-01',
+    inTime: '09:45',
+    outTime: '10:15',
+    miles: 5,
+    transportType: 'Ambulatory',
+    phone: '555-0000',
+    medicaidNumber: 'MC-TEST',
+    invoiceNumber: 'INV-TEST',
+    pickupAddress: '123 A St',
+    dropoffAddress: '456 B Ave',
+    notes: 'n/a',
   };
   const onSelect = jest.fn();
   render(
@@ -39,6 +50,17 @@ test('does not show pickup time when card is inactive', () => {
     from: 'A',
     to: 'B',
     time: '10:00',
+    date: '2024-01-01',
+    inTime: '09:45',
+    outTime: '10:15',
+    miles: 5,
+    transportType: 'Ambulatory',
+    phone: '555-0000',
+    medicaidNumber: 'MC-TEST',
+    invoiceNumber: 'INV-TEST',
+    pickupAddress: '123 A St',
+    dropoffAddress: '456 B Ave',
+    notes: 'n/a',
   };
   render(
     <TripCard
@@ -62,6 +84,17 @@ test('shows pickup time when card is active', () => {
     from: 'A',
     to: 'B',
     time: '10:00',
+    date: '2024-01-01',
+    inTime: '09:45',
+    outTime: '10:15',
+    miles: 5,
+    transportType: 'Ambulatory',
+    phone: '555-0000',
+    medicaidNumber: 'MC-TEST',
+    invoiceNumber: 'INV-TEST',
+    pickupAddress: '123 A St',
+    dropoffAddress: '456 B Ave',
+    notes: 'n/a',
   };
   render(
     <TripCard
