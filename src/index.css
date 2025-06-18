@@ -32,7 +32,8 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
   display: grid;
   height: 100vh;
   grid-template-columns: 1fr;
-  grid-template-rows: 60px 1fr auto auto;
+  /* Allocate space so the trip manifest grows while active drivers stay fixed */
+  grid-template-rows: 60px 1fr 1fr 150px;
   grid-template-areas:
     "header"
     "map"
@@ -67,7 +68,10 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 
 .trip-queue, .driver-roster { background-color: var(--bg-slate-blue); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; }
 .trip-list, .roster-scroll { overflow: auto; padding: 10px; flex-grow: 1; }
-.driver-roster { grid-area: roster; }
+.driver-roster {
+  grid-area: roster;
+  height: 150px; /* keep active driver section at a fixed height */
+}
 .roster-scroll { display: flex; gap: 15px; }
 .trip-queue { grid-area: queue; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
