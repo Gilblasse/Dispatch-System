@@ -65,11 +65,29 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
   max-width: 300px;
 }
 
-.trip-queue, .driver-roster { background-color: var(--bg-slate-blue); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; }
-.trip-list, .roster-scroll { overflow: auto; padding: 10px; flex-grow: 1; }
+.trip-queue, .driver-roster {
+  background-color: var(--bg-slate-blue);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+.trip-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px;
+  flex-grow: 1;
+}
+.roster-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px;
+  flex-grow: 1;
+  display: flex;
+  gap: 15px;
+}
 .driver-roster { grid-area: roster; }
-.roster-scroll { display: flex; gap: 15px; }
-.trip-queue { grid-area: queue; }
+.trip-queue { grid-area: queue; min-height: 300px; }
 .panel-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid var(--border-color); }
 .panel-header h2 { font-size: 1rem; }
 .clear-filter-btn { background: none; border: 1px solid var(--text-secondary); color: var(--text-secondary); font-size: 0.75rem; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s; }
