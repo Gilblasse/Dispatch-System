@@ -1,6 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import DriverRoster from '../DriverRoster';
 import { Driver, Trip } from '../../mockData';
 
@@ -23,4 +23,24 @@ test('renders driver names', () => {
 
   expect(screen.getByText('Alice')).toBeInTheDocument();
   expect(screen.getByText('Bob')).toBeInTheDocument();
+});
+
+test('wheel event scrolls roster', () => {
+  const drivers: Driver[] = [
+    { id: 'd1', name: 'Alice', photo: 'a', vehicle: 'car' },
+  ];
+  const trips: Trip[] = [];
+  const { container } = render(
+    <DriverRoster
+      drivers={drivers}
+      trips={trips}
+      activeDriverId={null}
+      onSelectDriver={() => {}}
+    />
+  );
+
+  const roster = container.querySelector('#driver-roster-container') as HTMLElement;
+  roster.scrollLeft = 0;
+  fireEvent.wheel(roster, { deltaY: 30 });
+  expect(roster.scrollLeft).toBe(30);
 });

@@ -17,7 +17,14 @@ export default function DriverRoster({ drivers, trips, activeDriverId, onSelectD
       <div className="panel-header">
         <h2>Active Drivers</h2>
       </div>
-      <div className="roster-scroll" id="driver-roster-container">
+      <div
+        className="roster-scroll"
+        id="driver-roster-container"
+        onWheel={e => {
+          e.preventDefault();
+          e.currentTarget.scrollLeft += e.deltaY;
+        }}
+      >
         {drivers.map(driver => (
           <DriverCard
             key={driver.id}
