@@ -31,6 +31,7 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 .dashboard-container {
   display: grid;
   height: 100vh;
+  --roster-height: auto;
   grid-template-columns: 1fr;
   grid-template-rows: 60px 1fr auto auto;
   grid-template-areas:
@@ -40,6 +41,11 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
     "roster";
   gap: 12px;
   padding: 12px;
+}
+
+/* height adjustment when roster is collapsed */
+.dashboard-container.roster-collapsed {
+  --roster-height: 50px;
 }
 .command-bar { grid-area: header; display: flex; align-items: center; background-color: var(--bg-slate-blue); padding: 0 20px; border-radius: 8px; border: 1px solid var(--border-color); }
 .command-bar .logo { font-size: 1.2rem; font-weight: 700; color: var(--accent-teal); margin-right: 30px; }
@@ -247,7 +253,8 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 @media (min-width: 768px) {
   .dashboard-container {
     grid-template-columns: 380px 1fr;
-    grid-template-rows: 60px 1fr 150px;
+    --roster-height: 150px;
+    grid-template-rows: 60px 1fr var(--roster-height);
     grid-template-areas:
       "header header"
       "queue map"

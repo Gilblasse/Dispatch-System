@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Driver, Trip } from '../mockData';
 import DriverCard from './DriverCard';
 import { getDriverStatus } from '../utils/driverUtils';
@@ -13,6 +13,13 @@ interface DriverRosterProps {
 
 export default function DriverRoster({ drivers, trips, activeDriverId, onSelectDriver }: DriverRosterProps) {
   const [collapsed, setCollapsed] = useState(false);
+
+  // update dashboard layout when collapsing the roster
+  useEffect(() => {
+    const container = document.querySelector('.dashboard-container');
+    if (!container) return;
+    container.classList.toggle('roster-collapsed', collapsed);
+  }, [collapsed]);
 
   return (
     <footer className={`driver-roster${collapsed ? ' collapsed' : ''}`}> 

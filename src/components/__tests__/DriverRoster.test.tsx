@@ -50,19 +50,26 @@ test('collapse button toggles roster visibility', () => {
     { id: 'd1', name: 'Alice', photo: 'a', vehicle: 'car' },
   ];
   const trips: Trip[] = [];
-  render(
-    <DriverRoster
-      drivers={drivers}
-      trips={trips}
-      activeDriverId={null}
-      onSelectDriver={() => {}}
-    />
+  const { container } = render(
+    <div className="dashboard-container">
+      <DriverRoster
+        drivers={drivers}
+        trips={trips}
+        activeDriverId={null}
+        onSelectDriver={() => {}}
+      />
+    </div>
   );
 
   const button = screen.getByRole('button');
+  const dashboard = container.querySelector('.dashboard-container') as HTMLElement;
+
   expect(screen.getByText('Alice')).toBeInTheDocument();
+  expect(dashboard.classList.contains('roster-collapsed')).toBe(false);
   fireEvent.click(button);
   expect(screen.queryByText('Alice')).not.toBeInTheDocument();
+  expect(dashboard.classList.contains('roster-collapsed')).toBe(true);
   fireEvent.click(button);
   expect(screen.getByText('Alice')).toBeInTheDocument();
+  expect(dashboard.classList.contains('roster-collapsed')).toBe(false);
 });
