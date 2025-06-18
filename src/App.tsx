@@ -41,6 +41,7 @@ export default function App() {
   const [filterType, setFilterType] = useState<FilterType>('none');
   const [filterId, setFilterId] = useState<string | null>(null);
   const [detailedTrip, setDetailedTrip] = useState<Trip | null>(null);
+  const [activeTripId, setActiveTripId] = useState<string | null>(null);
 
   const dateKey = getDateKey(selectedDate);
   const allTripsForDay = MOCK_SCHEDULE[dateKey] || [];
@@ -69,6 +70,7 @@ export default function App() {
     setFilterType('none');
     setFilterId(null);
     setDetailedTrip(null);
+    setActiveTripId(null);
   }, [selectedDate]);
 
   return (
@@ -167,17 +169,13 @@ export default function App() {
             .slice()
             .sort((a, b) => a.time.localeCompare(b.time))
             .map(trip => {
-              const isActive = filterType === 'trip' && filterId === trip.id;
+              const isActive = activeTripId === trip.id;
               return (
                 <div
                   key={trip.id}
                   className={`trip-card ${isActive ? 'active' : ''}`}
                   data-status={trip.status}
-                  onClick={() => {
-                    setFilterType('trip');
-                    setFilterId(trip.id);
-                    setDetailedTrip(null);
-                  }}
+                  onClick={() => setActiveTripId(trip.id)}
                   onDoubleClick={() => {
                     setFilterType('passenger');
                     setFilterId(trip.passenger);
