@@ -43,12 +43,16 @@ export default function TripCard({
           <span className="trip-arrow">&nbsp;&rarr;&nbsp;</span>
           <span>{trip.to}</span>
         </p>
+        <p className="trip-phone">
+          <i className="fas fa-phone" /> {trip.phone}
+        </p>
       </div>
       {isActive && trip.time && (
         <div className="trip-footer">
           <span>
             <i className="fas fa-clock"></i> Pickup at {trip.time}
           </span>
+          <span className="transport-type">{trip.transportType}</span>
         </div>
       )}
     </div>

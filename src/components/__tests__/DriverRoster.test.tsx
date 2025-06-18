@@ -10,7 +10,26 @@ test('renders driver names', () => {
     { id: 'd2', name: 'Bob', photo: 'b', vehicle: 'van' },
   ];
   const trips: Trip[] = [
-    { id: 't1', driverId: 'd1', status: 'en-route', passenger: 'P', from: 'A', to: 'B', time: '10:00' },
+    {
+      id: 't1',
+      driverId: 'd1',
+      status: 'en-route',
+      passenger: 'P',
+      from: 'A',
+      to: 'B',
+      time: '10:00',
+      date: '2024-01-01',
+      inTime: '09:45',
+      outTime: '10:15',
+      miles: 5,
+      transportType: 'Ambulatory',
+      phone: '555-0000',
+      medicaidNumber: 'MC-TEST',
+      invoiceNumber: 'INV-TEST',
+      pickupAddress: '123 A St',
+      dropoffAddress: '456 B Ave',
+      notes: 'n/a',
+    },
   ];
   render(
     <DriverRoster
