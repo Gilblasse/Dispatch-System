@@ -29,3 +29,49 @@ test('calls onSelect when card is clicked', () => {
   fireEvent.click(card);
   expect(onSelect).toHaveBeenCalled();
 });
+
+test('does not show pickup time when card is inactive', () => {
+  const trip: Trip = {
+    id: 't1',
+    driverId: 'd1',
+    status: 'pending',
+    passenger: 'John Doe',
+    from: 'A',
+    to: 'B',
+    time: '10:00',
+  };
+  render(
+    <TripCard
+      trip={trip}
+      isActive={false}
+      onSelect={() => {}}
+      onPassengerFilter={() => {}}
+      onShowDetails={() => {}}
+    />
+  );
+
+  expect(screen.queryByText(/Pickup at/)).not.toBeInTheDocument();
+});
+
+test('shows pickup time when card is active', () => {
+  const trip: Trip = {
+    id: 't1',
+    driverId: 'd1',
+    status: 'pending',
+    passenger: 'John Doe',
+    from: 'A',
+    to: 'B',
+    time: '10:00',
+  };
+  render(
+    <TripCard
+      trip={trip}
+      isActive={true}
+      onSelect={() => {}}
+      onPassengerFilter={() => {}}
+      onShowDetails={() => {}}
+    />
+  );
+
+  expect(screen.getByText(/Pickup at 10:00/)).toBeInTheDocument();
+});
