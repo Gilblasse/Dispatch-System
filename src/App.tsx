@@ -103,7 +103,15 @@ export default function App() {
       <aside className="trip-queue">
         <div className="panel-header" id="trip-panel-header">
           <h2>
-            {filterType === 'none' ? 'Trip Manifest' : `Filtered: ${filterId}`}
+            {filterType === 'none'
+              ? 'Trip Manifest'
+              : filterType === 'trip'
+                ? `Trip for ${
+                    tripsToDisplay.find(t => t.id === filterId)?.passenger || filterId
+                  }`
+                : filterType === 'driver'
+                  ? `Driver: ${MOCK_DRIVERS[filterId || '']?.name || filterId}`
+                  : `Passenger: ${filterId}`}
           </h2>
           {filterType !== 'none' && (
             <button
@@ -148,7 +156,6 @@ export default function App() {
                     >
                       {trip.passenger}
                     </h3>
-                    <span style={{ flexShrink: 0, marginLeft: '10px' }}>{trip.id.toUpperCase()}</span>
                   </div>
                   <div className="trip-locations">
                     <p>
