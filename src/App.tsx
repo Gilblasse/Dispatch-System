@@ -40,6 +40,7 @@ export default function App() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [filterType, setFilterType] = useState<FilterType>('none');
   const [filterId, setFilterId] = useState<string | null>(null);
+  const [detailedTrip, setDetailedTrip] = useState<Trip | null>(null);
 
   const dateKey = getDateKey(selectedDate);
   const allTripsForDay = MOCK_SCHEDULE[dateKey] || [];
@@ -67,6 +68,7 @@ export default function App() {
   useEffect(() => {
     setFilterType('none');
     setFilterId(null);
+    setDetailedTrip(null);
   }, [selectedDate]);
 
   return (
@@ -111,6 +113,7 @@ export default function App() {
               onClick={() => {
                 setFilterType('none');
                 setFilterId(null);
+                setDetailedTrip(null);
               }}
             >
               <i className="fas fa-xmark" /> Show All
@@ -118,6 +121,35 @@ export default function App() {
           )}
         </div>
         <div className="trip-list" id="trip-list-container">
+          {detailedTrip && (
+            <div className="trip-details">
+              <div className="details-header">
+                <h3>{detailedTrip.passenger}</h3>
+                <button
+                  className="close-details-btn"
+                  onClick={() => setDetailedTrip(null)}
+                >
+                  <i className="fas fa-xmark" />
+                </button>
+              </div>
+              <p>
+                <strong>Trip ID:</strong> {detailedTrip.id.toUpperCase()}
+              </p>
+              <p>
+                <strong>From:</strong> {detailedTrip.from}
+              </p>
+              <p>
+                <strong>To:</strong> {detailedTrip.to}
+              </p>
+              <p>
+                <strong>Pickup:</strong> {detailedTrip.time}
+              </p>
+              <p>
+                <strong>Driver:</strong>{' '}
+                {MOCK_DRIVERS[detailedTrip.driverId].name}
+              </p>
+            </div>
+          )}
           {tripsToDisplay.length === 0 && (
             <p style={{ textAlign: 'center', color: 'var(--text-secondary)', padding: '20px' }}>
               No trips found.
@@ -136,6 +168,12 @@ export default function App() {
                   onClick={() => {
                     setFilterType('trip');
                     setFilterId(trip.id);
+                    setDetailedTrip(null);
+                  }}
+                  onDoubleClick={() => {
+                    setFilterType('passenger');
+                    setFilterId(trip.passenger);
+                    setDetailedTrip(null);
                   }}
                 >
                   <div className="trip-header">
@@ -144,6 +182,11 @@ export default function App() {
                         e.stopPropagation();
                         setFilterType('passenger');
                         setFilterId(trip.passenger);
+                        setDetailedTrip(null);
+                      }}
+                      onDoubleClick={e => {
+                        e.stopPropagation();
+                        setDetailedTrip(trip);
                       }}
                     >
                       {trip.passenger}
@@ -184,6 +227,7 @@ export default function App() {
                 onClick={() => {
                   setFilterType('driver');
                   setFilterId(driver.id);
+                  setDetailedTrip(null);
                 }}
               >
                 <div className="driver-profile">
