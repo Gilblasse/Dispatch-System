@@ -80,12 +80,31 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 .trip-card:hover, .driver-card:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); border-color: var(--accent-teal); }
 .trip-card.active, .driver-card.active { box-shadow: 0 0 0 2px var(--accent-teal) !important; border-color: var(--accent-teal) !important; }
 
-.trip-card { background: rgba(26, 29, 45, 0.6); padding: 15px; margin-bottom: 10px; display: flex; flex-direction: column; }
-.trip-header h3 { font-size: 1.1rem; cursor: pointer; transition: color 0.2s; display: inline-block; }
+.trip-card {
+  background: rgba(26, 29, 45, 0.6);
+  padding: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+}
+.trip-header h3 {
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: inline-block;
+}
 .trip-header h3:hover { color: var(--accent-teal); }
-.trip-locations { margin-top: 10px; }
+.trip-locations {
+  margin-top: 8px;
+}
 .trip-locations i { color: var(--accent-teal); width: 20px; text-align: center; margin-right: 8px; }
-.trip-footer { margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-secondary); }
+.trip-footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
 
 .driver-card { flex-shrink: 0; width: 220px; background-color: var(--bg-deep-charcoal); padding: 15px; display: flex; flex-direction: column; }
 .driver-profile { display: flex; align-items: center; gap: 12px; }
