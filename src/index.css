@@ -82,46 +82,29 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 
 .trip-card {
   background: rgba(26, 29, 45, 0.6);
-  padding: 15px 15px 15px 20px;
-  margin-bottom: 10px;
+  padding: 8px;
+  margin-bottom: 8px;
   display: flex;
   flex-direction: column;
-  position: relative;
-  overflow: hidden;
 }
-
-.trip-card::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  background-color: var(--status-progress);
-  border-radius: 8px 0 0 8px;
+.trip-header h3 {
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: inline-block;
 }
-
-.trip-card[data-status='pending']::before {
-  background-color: var(--status-urgent);
-}
-
-.trip-card[data-status='en-route']::before,
-.trip-card[data-status='in-transit']::before {
-  background-color: var(--status-progress);
-}
-
-.trip-card[data-status='at-pickup']::before {
-  background-color: var(--status-arrived);
-}
-
-.trip-card[data-status='complete']::before {
-  background-color: var(--status-complete);
-}
-.trip-header h3 { font-size: 1.1rem; cursor: pointer; transition: color 0.2s; display: inline-block; }
 .trip-header h3:hover { color: var(--accent-teal); }
-.trip-locations { margin-top: 10px; }
+.trip-locations {
+  margin-top: 8px;
+}
 .trip-locations i { color: var(--accent-teal); width: 20px; text-align: center; margin-right: 8px; }
-.trip-footer { margin-top: 15px; padding-top: 10px; border-top: 1px solid var(--border-color); font-size: 0.8rem; color: var(--text-secondary); }
+.trip-footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
 
 .driver-card { flex-shrink: 0; width: 220px; background-color: var(--bg-deep-charcoal); padding: 15px; display: flex; flex-direction: column; }
 .driver-profile { display: flex; align-items: center; gap: 12px; }
