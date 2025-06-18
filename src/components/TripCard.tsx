@@ -38,11 +38,10 @@ export default function TripCard({
         </h3>
       </div>
       <div className="trip-locations">
-        <p>
-          <i className="fas fa-circle-dot"></i> <span>{trip.from}</span>
-        </p>
-        <p>
-          <i className="fas fa-flag-checkered"></i> <span>{trip.to}</span>
+        <p className="trip-route">
+          <span>{trip.from}</span>
+          <span className="trip-arrow">&nbsp;&rarr;&nbsp;</span>
+          <span>{trip.to}</span>
         </p>
       </div>
       <div className="trip-footer">
