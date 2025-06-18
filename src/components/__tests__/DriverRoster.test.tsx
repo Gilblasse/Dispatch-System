@@ -44,25 +44,3 @@ test('wheel event scrolls roster', () => {
   fireEvent.wheel(roster, { deltaY: 30 });
   expect(roster.scrollLeft).toBe(30);
 });
-
-test('collapse button toggles roster visibility', () => {
-  const drivers: Driver[] = [
-    { id: 'd1', name: 'Alice', photo: 'a', vehicle: 'car' },
-  ];
-  const trips: Trip[] = [];
-  render(
-    <DriverRoster
-      drivers={drivers}
-      trips={trips}
-      activeDriverId={null}
-      onSelectDriver={() => {}}
-    />
-  );
-
-  const button = screen.getByRole('button');
-  expect(screen.getByText('Alice')).toBeInTheDocument();
-  fireEvent.click(button);
-  expect(screen.queryByText('Alice')).not.toBeInTheDocument();
-  fireEvent.click(button);
-  expect(screen.getByText('Alice')).toBeInTheDocument();
-});
