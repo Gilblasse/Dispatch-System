@@ -8,7 +8,15 @@ export interface Driver {
 export interface Trip {
   id: string;
   driverId: string;
-  status: 'en-route' | 'at-pickup' | 'in-transit' | 'complete' | 'pending';
+  status:
+    | 'en-route'
+    | 'at-pickup'
+    | 'at-dropoff'
+    | 'in-transit'
+    | 'cancel'
+    | 'no_show'
+    | 'complete'
+    | 'pending';
   passenger: string;
   from: string;
   to: string;

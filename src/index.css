@@ -215,11 +215,15 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 .status-text-available { color: var(--status-complete); }
 .status-text-progress { color: var(--status-progress); }
 .status-text-arrived { color: var(--status-arrived); }
+.status-text-cancel { color: var(--status-urgent); }
+.status-text-no-show { color: var(--status-urgent); }
 
 .status-pill { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
 .status-pill-available { background-color: rgba(46, 213, 115, 0.15); color: var(--status-complete); }
 .status-pill-progress { background-color: rgba(254, 202, 87, 0.15); color: var(--status-progress); }
 .status-pill-arrived { background-color: rgba(74, 144, 226, 0.15); color: var(--status-arrived); }
+.status-pill-cancel { background-color: rgba(255, 71, 87, 0.15); color: var(--status-urgent); }
+.status-pill-no-show { background-color: rgba(255, 71, 87, 0.15); color: var(--status-urgent); }
 
 .map-container { grid-area: map; background: var(--bg-deep-charcoal) url('data:image/svg+xml,%3Csvg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%232a2f42" fill-opacity="0.4" fill-rule="evenodd"%3E%3Cpath d="M0 40L40 0H20L0 20M40 40V20L20 40"/%3E%3C/g%3E%3C/svg%3E'); border-radius: 8px; border: 1px solid var(--border-color); position: relative; overflow: hidden; }
 .map-icon { position: absolute; cursor: pointer; animation: fade-in 0.3s; }
