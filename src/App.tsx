@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './index.css';
 import { MOCK_DRIVERS, MOCK_SCHEDULE, Trip, Driver } from './mockData';
-import { getDateKey } from "./utils";
+import { getDateKey } from "./utils/dateUtils";
 import {
   CommandBar,
   TripQueue,

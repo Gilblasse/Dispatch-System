@@ -1,5 +1,5 @@
 import React from 'react';
-import { formatDateForDisplay } from '../utils';
+import { formatDateForDisplay } from '../utils/dateUtils';
 
 interface CommandBarProps {
   selectedDate: Date;

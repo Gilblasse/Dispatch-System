@@ -1,6 +1,6 @@
 import React from 'react';
 import { Driver } from '../mockData';
-import { DriverStatus } from '../utils';
+import { DriverStatus } from '../utils/driverUtils';
 
 interface DriverCardProps {
   driver: Driver;
