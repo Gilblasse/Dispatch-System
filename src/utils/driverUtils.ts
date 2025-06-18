@@ -17,6 +17,12 @@ export function getDriverStatus(driverId: string, trips: Trip[]): DriverStatus {
         return { className: 'status-pill-arrived', text: 'At Pickup' };
       case 'in-transit':
         return { className: 'status-pill-progress', text: 'In-Transit' };
+      case 'at-dropoff':
+        return { className: 'status-pill-arrived', text: 'At Dropoff' };
+      case 'cancel':
+        return { className: 'status-pill-cancel', text: 'Canceled' };
+      case 'no_show':
+        return { className: 'status-pill-no-show', text: 'No Show' };
     }
   }
   return { className: 'status-pill-available', text: 'Available' };
