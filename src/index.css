@@ -127,7 +127,15 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 .trip-locations {
   margin-top: 8px;
 }
-.trip-locations i { color: var(--accent-teal); width: 20px; text-align: center; margin-right: 8px; }
+.trip-route {
+  display: flex;
+  align-items: center;
+  font-size: 0.85rem;
+}
+.trip-arrow {
+  margin: 0 4px;
+  color: var(--text-secondary);
+}
 .trip-footer {
   margin-top: 12px;
   padding-top: 8px;
