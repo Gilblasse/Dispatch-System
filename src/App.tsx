@@ -63,6 +63,7 @@ export default function App() {
         totalDrivers={totalDrivers}
         onPrevDate={() => setSelectedDate(new Date(selectedDate.getTime() - 864e5))}
         onNextDate={() => setSelectedDate(new Date(selectedDate.getTime() + 864e5))}
+        onDateChange={setSelectedDate}
       />
 
       <TripQueue
