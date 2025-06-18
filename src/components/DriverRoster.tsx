@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Driver, Trip } from '../mockData';
 import DriverCard from './DriverCard';
 import { getDriverStatus } from '../utils/driverUtils';
@@ -9,17 +9,18 @@ interface DriverRosterProps {
   trips: Trip[];
   activeDriverId: string | null;
   onSelectDriver: (driverId: string) => void;
+  collapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
-export default function DriverRoster({ drivers, trips, activeDriverId, onSelectDriver }: DriverRosterProps) {
-  const [collapsed, setCollapsed] = useState(false);
-
-  // update dashboard layout when collapsing the roster
-  useEffect(() => {
-    const container = document.querySelector('.dashboard-container');
-    if (!container) return;
-    container.classList.toggle('roster-collapsed', collapsed);
-  }, [collapsed]);
+export default function DriverRoster({
+  drivers,
+  trips,
+  activeDriverId,
+  onSelectDriver,
+  collapsed,
+  onToggleCollapse,
+}: DriverRosterProps) {
 
   return (
     <footer className={`driver-roster${collapsed ? ' collapsed' : ''}`}> 
@@ -28,7 +29,7 @@ export default function DriverRoster({ drivers, trips, activeDriverId, onSelectD
         <button
           aria-label={collapsed ? 'Expand Active Drivers' : 'Collapse Active Drivers'}
           className="collapse-btn"
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={onToggleCollapse}
         >
           <i className={`fas fa-chevron-${collapsed ? 'up' : 'down'}`} />
         </button>

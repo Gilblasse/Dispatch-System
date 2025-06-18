@@ -18,6 +18,8 @@ test('renders driver names', () => {
       trips={trips}
       activeDriverId={null}
       onSelectDriver={() => {}}
+      collapsed={false}
+      onToggleCollapse={() => {}}
     />
   );
 
@@ -36,6 +38,8 @@ test('wheel event scrolls roster', () => {
       trips={trips}
       activeDriverId={null}
       onSelectDriver={() => {}}
+      collapsed={false}
+      onToggleCollapse={() => {}}
     />
   );
 
@@ -50,16 +54,24 @@ test('collapse button toggles roster visibility', () => {
     { id: 'd1', name: 'Alice', photo: 'a', vehicle: 'car' },
   ];
   const trips: Trip[] = [];
-  const { container } = render(
-    <div className="dashboard-container">
-      <DriverRoster
-        drivers={drivers}
-        trips={trips}
-        activeDriverId={null}
-        onSelectDriver={() => {}}
-      />
-    </div>
-  );
+
+  function Wrapper() {
+    const [collapsed, setCollapsed] = React.useState(false);
+    return (
+      <div className={`dashboard-container${collapsed ? ' roster-collapsed' : ''}`}>
+        <DriverRoster
+          drivers={drivers}
+          trips={trips}
+          activeDriverId={null}
+          onSelectDriver={() => {}}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed(c => !c)}
+        />
+      </div>
+    );
+  }
+
+  const { container } = render(<Wrapper />);
 
   const button = screen.getByRole('button');
   const dashboard = container.querySelector('.dashboard-container') as HTMLElement;
