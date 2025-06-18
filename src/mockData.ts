@@ -13,6 +13,8 @@ export interface Trip {
   from: string;
   to: string;
   time: string;
+  lat: number;
+  lng: number;
 }
 
 export const MOCK_DRIVERS: Record<string, Omit<Driver, 'id'>> = {
@@ -28,11 +30,51 @@ function getDateKey(date: Date) {
 
 export const MOCK_SCHEDULE: Record<string, Trip[]> = {
   [getDateKey(new Date())]: [
-    { id: 'zt-819', driverId: 'd1', status: 'en-route', passenger: 'Dr. Evelyn Reed', from: 'Grand Medical Center', to: "Oakwood Int'l Airport", time: '13:30' },
-    { id: 'zt-820', driverId: 'd2', status: 'at-pickup', passenger: 'Marcus Thorne', from: '123 Market St', to: 'Westside Conference Hall', time: '14:00' },
-    { id: 'zt-822', driverId: 'd4', status: 'in-transit', passenger: 'Dr. Evelyn Reed', from: "Oakwood Int'l Airport", to: 'The Landon Hotel', time: '18:00' },
+    {
+      id: 'zt-819',
+      driverId: 'd1',
+      status: 'en-route',
+      passenger: 'Dr. Evelyn Reed',
+      from: 'Grand Medical Center',
+      to: "Oakwood Int'l Airport",
+      time: '13:30',
+      lat: 32,
+      lng: 20,
+    },
+    {
+      id: 'zt-820',
+      driverId: 'd2',
+      status: 'at-pickup',
+      passenger: 'Marcus Thorne',
+      from: '123 Market St',
+      to: 'Westside Conference Hall',
+      time: '14:00',
+      lat: 45,
+      lng: 70,
+    },
+    {
+      id: 'zt-822',
+      driverId: 'd4',
+      status: 'in-transit',
+      passenger: 'Dr. Evelyn Reed',
+      from: "Oakwood Int'l Airport",
+      to: 'The Landon Hotel',
+      time: '18:00',
+      lat: 60,
+      lng: 40,
+    },
   ],
   [getDateKey(new Date(Date.now() - 864e5))]: [
-    { id: 'zt-755', driverId: 'd3', status: 'complete', passenger: 'Chloe Davis', from: 'Art Museum', to: 'The Landon Hotel', time: '15:00' },
+    {
+      id: 'zt-755',
+      driverId: 'd3',
+      status: 'complete',
+      passenger: 'Chloe Davis',
+      from: 'Art Museum',
+      to: 'The Landon Hotel',
+      time: '15:00',
+      lat: 80,
+      lng: 55,
+    },
   ],
 };

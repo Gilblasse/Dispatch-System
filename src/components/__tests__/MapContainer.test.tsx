@@ -9,7 +9,7 @@ test('renders markers for active trips', () => {
     d1: { name: 'Alice', photo: 'a', vehicle: 'car' },
   };
   const trips: Trip[] = [
-    { id: 't1', driverId: 'd1', status: 'en-route', passenger: 'P', from: 'A', to: 'B', time: '10:00' },
+    { id: 't1', driverId: 'd1', status: 'en-route', passenger: 'P', from: 'A', to: 'B', time: '10:00', lat: 50, lng: 40 },
   ];
   const { container } = render(<MapContainer drivers={drivers} trips={trips} />);
   expect(container.querySelectorAll('.map-driver').length).toBeGreaterThan(0);
