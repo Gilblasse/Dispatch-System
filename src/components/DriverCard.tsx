@@ -16,11 +16,11 @@ export default function DriverCard({ driver, status, isActive, onSelect }: Drive
         <img src={`https://i.pravatar.cc/80?u=${driver.photo}`} alt="Avatar" />
         <div className="driver-info">
           <h4>{driver.name}</h4>
-          <span className="driver-vehicle-info">{driver.vehicle}</span>
+          <span className={`driver-status-text ${status.className.replace('pill', 'text')}`}>{status.text}</span>
         </div>
       </div>
       <div className="driver-status-container">
-        <span className={`status-pill ${status.className}`}>{status.text}</span>
+        <span className="vehicle-pill">{driver.vehicle}</span>
       </div>
     </div>
   );

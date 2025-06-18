@@ -14,4 +14,5 @@ test('calls onSelect and displays status', () => {
   fireEvent.click(screen.getByText('Alice'));
   expect(onSelect).toHaveBeenCalled();
   expect(screen.getByText('En-Route')).toBeInTheDocument();
+  expect(screen.getByText('car')).toBeInTheDocument();
 });
