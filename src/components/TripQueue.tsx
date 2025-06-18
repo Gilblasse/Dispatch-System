@@ -1,0 +1,82 @@
+import React from 'react';
+import { Trip, Driver } from '../mockData';
+import TripCard from './TripCard';
+import TripDetails from './TripDetails';
+
+type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
+
+interface TripQueueProps {
+  trips: Trip[];
+  drivers: Record<string, Omit<Driver, 'id'>>;
+  filterType: FilterType;
+  filterId: string | null;
+  detailedTrip: Trip | null;
+  activeTripId: string | null;
+  onSelectTrip: (tripId: string) => void;
+  onPassengerFilter: (passenger: string) => void;
+  onShowTripDetails: (trip: Trip) => void;
+  onCloseTripDetails: () => void;
+  onClearFilter: () => void;
+}
+
+export default function TripQueue({
+  trips,
+  drivers,
+  filterType,
+  filterId,
+  detailedTrip,
+  activeTripId,
+  onSelectTrip,
+  onPassengerFilter,
+  onShowTripDetails,
+  onCloseTripDetails,
+  onClearFilter,
+}: TripQueueProps) {
+  return (
+    <aside className="trip-queue">
+      <div className="panel-header" id="trip-panel-header">
+        <h2>
+          {filterType === 'none'
+            ? 'Trip Manifest'
+            : filterType === 'trip'
+              ? `Trip for ${trips.find(t => t.id === filterId)?.passenger || filterId}`
+              : filterType === 'driver'
+                ? `Driver: ${drivers[filterId || '']?.name || filterId}`
+                : `Passenger: ${filterId}`}
+        </h2>
+        {filterType !== 'none' && (
+          <button className="clear-filter-btn" onClick={onClearFilter}>
+            <i className="fas fa-xmark" /> Show All
+          </button>
+        )}
+      </div>
+      <div className="trip-list" id="trip-list-container">
+        {detailedTrip && (
+          <TripDetails
+            trip={detailedTrip}
+            driver={{ id: detailedTrip.driverId, ...drivers[detailedTrip.driverId] }}
+            onClose={onCloseTripDetails}
+          />
+        )}
+        {trips.length === 0 && (
+          <p style={{ textAlign: 'center', color: 'var(--text-secondary)', padding: '20px' }}>
+            No trips found.
+          </p>
+        )}
+        {trips
+          .slice()
+          .sort((a, b) => a.time.localeCompare(b.time))
+          .map(trip => (
+            <TripCard
+              key={trip.id}
+              trip={trip}
+              isActive={activeTripId === trip.id}
+              onSelect={() => onSelectTrip(trip.id)}
+              onPassengerFilter={() => onPassengerFilter(trip.passenger)}
+              onShowDetails={() => onShowTripDetails(trip)}
+            />
+          ))}
+      </div>
+    </aside>
+  );
+}
