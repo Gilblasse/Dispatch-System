@@ -10,7 +10,7 @@ test('renders driver names', () => {
     { id: 'd2', name: 'Bob', photo: 'b', vehicle: 'van' },
   ];
   const trips: Trip[] = [
-    { id: 't1', driverId: 'd1', status: 'en-route', passenger: 'P', from: 'A', to: 'B', time: '10:00' },
+    { id: 't1', driverId: 'd1', status: 'en-route', passenger: 'P', from: 'A', to: 'B', time: '10:00', lat: 10, lng: 20 },
   ];
   render(
     <DriverRoster

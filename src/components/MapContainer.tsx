@@ -19,7 +19,7 @@ export default function MapContainer({ drivers, trips }: MapContainerProps) {
             key={id}
             className="map-icon map-driver"
             data-status={activeTrip.status}
-            style={{ top: `${Math.random() * 80 + 10}%`, left: `${Math.random() * 80 + 10}%` }}
+            style={{ top: `${activeTrip.lat}%`, left: `${activeTrip.lng}%` }}
           >
             <div className="icon-body"></div>
           </div>

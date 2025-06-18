@@ -13,6 +13,8 @@ test('close button triggers callback', () => {
     from: 'A',
     to: 'B',
     time: '10:00',
+    lat: 30,
+    lng: 60,
   };
   const driver: Driver = { id: 'd1', name: 'Driver', photo: 'a', vehicle: 'car' };
   const onClose = jest.fn();

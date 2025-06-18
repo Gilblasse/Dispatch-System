@@ -13,6 +13,8 @@ test('calls onSelect when card is clicked', () => {
     from: 'A',
     to: 'B',
     time: '10:00',
+    lat: 12,
+    lng: 34,
   };
   const onSelect = jest.fn();
   render(
@@ -39,6 +41,8 @@ test('does not show pickup time when card is inactive', () => {
     from: 'A',
     to: 'B',
     time: '10:00',
+    lat: 12,
+    lng: 34,
   };
   render(
     <TripCard
@@ -62,6 +66,8 @@ test('shows pickup time when card is active', () => {
     from: 'A',
     to: 'B',
     time: '10:00',
+    lat: 12,
+    lng: 34,
   };
   render(
     <TripCard
