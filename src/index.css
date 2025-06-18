@@ -177,7 +177,17 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 .driver-info h4 { font-size: 0.9rem; font-weight: 600; }
 .driver-status-text { font-size: 0.8rem; font-weight: 600; }
 .driver-status-container { margin-top: 12px; }
-.vehicle-pill { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; background-color: rgba(255,255,255,0.1); color: var(--text-secondary); }
+.vehicle-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: rgba(255,255,255,0.1);
+  color: var(--text-secondary);
+  position: relative;
+  top: -16px;
+}
 .status-text-available { color: var(--status-complete); }
 .status-text-progress { color: var(--status-progress); }
 .status-text-arrived { color: var(--status-arrived); }
