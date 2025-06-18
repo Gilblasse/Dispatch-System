@@ -28,16 +28,42 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
   to { opacity: 1; transform: translateY(0); }
 }
 
-.dashboard-container { display: grid; height: 100vh; grid-template-columns: 380px 1fr; grid-template-rows: 60px 1fr 150px; grid-template-areas: "header header" "queue map" "roster map"; gap: 12px; padding: 12px; }
+.dashboard-container {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px 1fr auto auto;
+  grid-template-areas:
+    "header"
+    "map"
+    "queue"
+    "roster";
+  gap: 12px;
+  padding: 12px;
+}
 .command-bar { grid-area: header; display: flex; align-items: center; background-color: var(--bg-slate-blue); padding: 0 20px; border-radius: 8px; border: 1px solid var(--border-color); }
 .command-bar .logo { font-size: 1.2rem; font-weight: 700; color: var(--accent-teal); margin-right: 30px; }
 .date-navigator { display: flex; align-items: center; gap: 15px; font-size: 0.9rem; font-weight: 500; position: relative; margin-right: 40px; }
 .date-navigator .nav-arrow, #current-date { cursor: pointer; transition: color 0.2s; }
 .date-navigator .nav-arrow:hover, #current-date:hover { color: var(--accent-teal); }
-.kpis { display: flex; gap: 30px; font-size: 0.9rem; color: var(--text-secondary); }
+.kpis {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  flex-wrap: wrap;
+}
 .kpi span { font-weight: 600; color: var(--text-primary); margin-left: 8px; }
 .search-bar { margin-left: auto; }
-.search-bar input { background-color: var(--bg-deep-charcoal); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 12px; color: var(--text-primary); width: 300px; }
+.search-bar input {
+  background-color: var(--bg-deep-charcoal);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  width: 100%;
+  max-width: 300px;
+}
 
 .trip-queue, .driver-roster { background-color: var(--bg-slate-blue); border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; }
 .trip-list, .roster-scroll { overflow: auto; padding: 10px; flex-grow: 1; }
@@ -88,3 +114,20 @@ body { font-family: var(--font-family); background-color: var(--bg-deep-charcoal
 .map-pin i { transform: rotate(45deg); }
 .map-pickup-pin { background-color: var(--status-arrived); }
 .map-dropoff-pin { background-color: var(--status-complete); }
+
+@media (min-width: 768px) {
+  .dashboard-container {
+    grid-template-columns: 380px 1fr;
+    grid-template-rows: 60px 1fr 150px;
+    grid-template-areas:
+      "header header"
+      "queue map"
+      "roster map";
+  }
+  .kpis {
+    gap: 30px;
+  }
+  .search-bar input {
+    width: 300px;
+  }
+}
