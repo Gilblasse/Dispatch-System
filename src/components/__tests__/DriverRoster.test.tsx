@@ -18,6 +18,8 @@ test('renders driver names', () => {
       trips={trips}
       activeDriverId={null}
       onSelectDriver={() => {}}
+      collapsed={false}
+      onToggleCollapse={() => {}}
     />
   );
 
@@ -36,6 +38,8 @@ test('wheel event scrolls roster', () => {
       trips={trips}
       activeDriverId={null}
       onSelectDriver={() => {}}
+      collapsed={false}
+      onToggleCollapse={() => {}}
     />
   );
 
@@ -43,4 +47,41 @@ test('wheel event scrolls roster', () => {
   roster.scrollLeft = 0;
   fireEvent.wheel(roster, { deltaY: 30 });
   expect(roster.scrollLeft).toBe(30);
+});
+
+test('collapse button toggles roster visibility', () => {
+  const drivers: Driver[] = [
+    { id: 'd1', name: 'Alice', photo: 'a', vehicle: 'car' },
+  ];
+  const trips: Trip[] = [];
+
+  function Wrapper() {
+    const [collapsed, setCollapsed] = React.useState(false);
+    return (
+      <div className={`dashboard-container${collapsed ? ' roster-collapsed' : ''}`}>
+        <DriverRoster
+          drivers={drivers}
+          trips={trips}
+          activeDriverId={null}
+          onSelectDriver={() => {}}
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed(c => !c)}
+        />
+      </div>
+    );
+  }
+
+  const { container } = render(<Wrapper />);
+
+  const button = screen.getByRole('button');
+  const dashboard = container.querySelector('.dashboard-container') as HTMLElement;
+
+  expect(screen.getByText('Alice')).toBeInTheDocument();
+  expect(dashboard.classList.contains('roster-collapsed')).toBe(false);
+  fireEvent.click(button);
+  expect(screen.queryByText('Alice')).not.toBeInTheDocument();
+  expect(dashboard.classList.contains('roster-collapsed')).toBe(true);
+  fireEvent.click(button);
+  expect(screen.getByText('Alice')).toBeInTheDocument();
+  expect(dashboard.classList.contains('roster-collapsed')).toBe(false);
 });

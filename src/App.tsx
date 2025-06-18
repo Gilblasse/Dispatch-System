@@ -17,6 +17,7 @@ export default function App() {
   const [filterId, setFilterId] = useState<string | null>(null);
   const [detailedTrip, setDetailedTrip] = useState<Trip | null>(null);
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
+  const [rosterCollapsed, setRosterCollapsed] = useState(false);
 
   const dateKey = getDateKey(selectedDate);
   const allTripsForDay = MOCK_SCHEDULE[dateKey] || [];
@@ -54,7 +55,7 @@ export default function App() {
   }, [selectedDate]);
 
   return (
-    <div className="dashboard-container">
+    <div className={`dashboard-container${rosterCollapsed ? ' roster-collapsed' : ''}`}>
       <CommandBar
         selectedDate={selectedDate}
         pending={pending}
@@ -97,6 +98,8 @@ export default function App() {
           setFilterId(id);
           setDetailedTrip(null);
         }}
+        collapsed={rosterCollapsed}
+        onToggleCollapse={() => setRosterCollapsed(c => !c)}
       />
 
       <MapContainer drivers={MOCK_DRIVERS} trips={tripsToDisplay} />
