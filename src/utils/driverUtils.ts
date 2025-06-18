@@ -1,14 +1,4 @@
-import { Trip } from './mockData';
-
-export function getDateKey(date: Date) {
-  return date.toISOString().split('T')[0];
-}
-
-export function formatDateForDisplay(date: Date) {
-  return new Date().toDateString() === date.toDateString()
-    ? 'Today'
-    : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-}
+import { Trip } from '../mockData';
 
 export interface DriverStatus {
   className: string;

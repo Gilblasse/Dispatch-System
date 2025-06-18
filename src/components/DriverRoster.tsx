@@ -1,7 +1,7 @@
 import React from 'react';
 import { Driver, Trip } from '../mockData';
 import DriverCard from './DriverCard';
-import { getDriverStatus } from '../utils';
+import { getDriverStatus } from '../utils/driverUtils';
 
 
 interface DriverRosterProps {
