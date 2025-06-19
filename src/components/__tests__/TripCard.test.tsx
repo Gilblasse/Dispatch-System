@@ -143,4 +143,5 @@ test('shows transport icon when card is active', () => {
   const icon = screen.getByLabelText('Wheelchair');
   expect(icon).toBeInTheDocument();
   expect(icon.querySelector('i')).toHaveClass('fa-wheelchair');
+  expect(icon).toHaveAttribute('title', 'Wheelchair');
 });

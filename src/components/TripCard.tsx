@@ -65,6 +65,7 @@ export default function TripCard({
           <span
             className="transport-type-icon"
             aria-label={trip.transportType}
+            title={trip.transportType}
           >
             <i className={`fas ${getTransportIcon(trip.transportType)}`}></i>
           </span>
