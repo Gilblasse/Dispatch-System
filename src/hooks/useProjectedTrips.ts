@@ -23,7 +23,7 @@ export default function useProjectedTrips(
 ): ProjectedTripPositions {
   const [positions, setPositions] = useState<ProjectedTripPositions>({});
   const lastHashRef = useRef<string>('');
-  const timerRef = useRef<number>();
+  const timerRef = useRef<number | undefined>(undefined);
 
   const projectTrips = () => {
     if (!map) return;
