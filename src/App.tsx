@@ -2,10 +2,12 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDriverDetails } from './store/driverDetailsSlice';
 import { setTripsSchedule } from './store/tripsDetailsSlice';
+import { setTrips } from './store/tripsSlice';
 import { RootState } from './store';
 import './index.css';
 import { MOCK_DRIVERS, MOCK_SCHEDULE, Trip, Driver } from './mockData';
 import { getDateKey } from "./utils/dateUtils";
+import { mapScheduleToTrips } from './utils/tripUtils';
 import {
   CommandBar,
   TripQueue,
@@ -23,6 +25,14 @@ export default function App() {
   useEffect(() => {
     dispatch(setDriverDetails(MOCK_DRIVERS));
     dispatch(setTripsSchedule(MOCK_SCHEDULE));
+    (async () => {
+      try {
+        const mapTrips = await mapScheduleToTrips(MOCK_SCHEDULE);
+        dispatch(setTrips(mapTrips));
+      } catch {
+        // ignore geocode errors
+      }
+    })();
   }, [dispatch]);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
