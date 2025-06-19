@@ -1,8 +1,13 @@
+import type { Driver as MapDriver, Trip as MapTrip } from './types';
+
 export interface Driver {
   id: string;
   name: string;
   photo: string;
   vehicle: string;
+  lat: number;
+  lng: number;
+  status: string;
 }
 
 export type TripStatus =
@@ -40,10 +45,38 @@ export interface Trip {
 }
 
 export const MOCK_DRIVERS: Record<string, Omit<Driver, 'id'>> = {
-  d1: { name: 'Elena Vance', photo: 'a', vehicle: 'Tesla Model Y (XL)' },
-  d2: { name: 'Ben Carter', photo: 'b', vehicle: 'Ford Transit (WAV)' },
-  d3: { name: 'Maya Singh', photo: 'c', vehicle: 'Toyota Camry' },
-  d4: { name: 'David Chen', photo: 'd', vehicle: 'Chevy Suburban (XL)' },
+  d1: {
+    name: 'Elena Vance',
+    photo: 'a',
+    vehicle: 'Tesla Model Y (XL)',
+    lat: 40.7128,
+    lng: -74.006,
+    status: 'idle',
+  },
+  d2: {
+    name: 'Ben Carter',
+    photo: 'b',
+    vehicle: 'Ford Transit (WAV)',
+    lat: 40.71,
+    lng: -74.015,
+    status: 'idle',
+  },
+  d3: {
+    name: 'Maya Singh',
+    photo: 'c',
+    vehicle: 'Toyota Camry',
+    lat: 40.715,
+    lng: -74.0,
+    status: 'idle',
+  },
+  d4: {
+    name: 'David Chen',
+    photo: 'd',
+    vehicle: 'Chevy Suburban (XL)',
+    lat: 40.718,
+    lng: -74.011,
+    status: 'idle',
+  },
 };
 
 function getDateKey(date: Date) {
@@ -136,3 +169,30 @@ export const MOCK_SCHEDULE: Record<string, Trip[]> = {
     },
   ],
 };
+
+// Map data derived from drivers and static trip examples
+
+export const MOCK_DRIVERS_MAP: MapDriver[] = Object.entries(MOCK_DRIVERS).map(
+  ([id, d]) => ({ id, lat: d.lat, lng: d.lng, status: d.status })
+);
+
+export const MOCK_TRIPS_MAP: MapTrip[] = [
+  {
+    id: 't1',
+    passengerName: 'Alice',
+    pickup: { lat: 40.7127, lng: -74.0059 },
+    dropoff: { lat: 40.721, lng: -74.01 },
+  },
+  {
+    id: 't2',
+    passengerName: 'Bob',
+    pickup: { lat: 40.718, lng: -74.012 },
+    dropoff: { lat: 40.722, lng: -74.003 },
+  },
+  {
+    id: 't3',
+    passengerName: 'Charlie',
+    pickup: { lat: 40.709, lng: -74.01 },
+    dropoff: { lat: 40.714, lng: -74.016 },
+  },
+];

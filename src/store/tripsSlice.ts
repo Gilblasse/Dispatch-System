@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Trip } from '../types';
-import { MOCK_TRIPS_MAP } from '../mockMapData';
+import { MOCK_TRIPS_MAP } from '../mockData';
 
 const initialState: Trip[] = [...MOCK_TRIPS_MAP];
 

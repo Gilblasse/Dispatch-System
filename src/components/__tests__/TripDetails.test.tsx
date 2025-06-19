@@ -25,7 +25,15 @@ test('close button triggers callback', () => {
     dropoffAddress: '456 B Ave',
     notes: 'n/a',
   };
-  const driver: Driver = { id: 'd1', name: 'Driver', photo: 'a', vehicle: 'car' };
+  const driver: Driver = {
+    id: 'd1',
+    name: 'Driver',
+    photo: 'a',
+    vehicle: 'car',
+    lat: 0,
+    lng: 0,
+    status: 'idle',
+  };
   const onClose = jest.fn();
   render(<TripDetails trip={trip} driver={driver} onClose={onClose} />);
   fireEvent.click(screen.getByRole('button'));

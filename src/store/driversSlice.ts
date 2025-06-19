@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Driver } from '../types';
-import { MOCK_DRIVERS_MAP } from '../mockMapData';
+import { MOCK_DRIVERS_MAP } from '../mockData';
 
 const initialState: Driver[] = [...MOCK_DRIVERS_MAP];
 
