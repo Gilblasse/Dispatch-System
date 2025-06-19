@@ -1,12 +1,13 @@
 import React from 'react';
-import { Driver, Trip } from '../mockData';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { getDateKey } from '../utils/dateUtils';
 import DriverCard from './DriverCard';
 import { getDriverStatus } from '../utils/driverUtils';
 
 
 interface DriverRosterProps {
-  drivers: Driver[];
-  trips: Trip[];
+  selectedDate: Date;
   activeDriverId: string | null;
   onSelectDriver: (driverId: string) => void;
   collapsed: boolean;
@@ -14,16 +15,20 @@ interface DriverRosterProps {
 }
 
 export default function DriverRoster({
-  drivers,
-  trips,
+  selectedDate,
   activeDriverId,
   onSelectDriver,
   collapsed,
   onToggleCollapse,
 }: DriverRosterProps) {
+  const drivers = useSelector((s: RootState) => s.driverDetails);
+  const schedule = useSelector((s: RootState) => s.tripsDetails);
+  const dateKey = getDateKey(selectedDate);
+  const trips = schedule[dateKey] || [];
+  const driversList = Object.entries(drivers).map(([id, d]) => ({ id, ...d }));
 
   return (
-    <footer className={`driver-roster${collapsed ? ' collapsed' : ''}`}> 
+    <footer className={`driver-roster${collapsed ? ' collapsed' : ''}`}>
       <div className="panel-header">
         <h2>Active Drivers</h2>
         <button
@@ -43,7 +48,7 @@ export default function DriverRoster({
             e.currentTarget.scrollLeft += e.deltaY;
           }}
         >
-          {drivers.map(driver => (
+          {driversList.map(driver => (
             <DriverCard
               key={driver.id}
               driver={driver}
