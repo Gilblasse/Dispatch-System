@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Driver } from '../types';
+import { MOCK_DRIVERS_MAP } from '../mockMapData';
 
-const initialState: Driver[] = [
-  { id: 'd1', lat: 40.7128, lng: -74.006, status: 'idle' },
-  { id: 'd2', lat: 40.73, lng: -74.01, status: 'idle' },
-];
+const initialState: Driver[] = [...MOCK_DRIVERS_MAP];
 
 const driversSlice = createSlice({
   name: 'drivers',
