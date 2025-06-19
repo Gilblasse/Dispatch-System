@@ -21,29 +21,29 @@ test('maps schedule trips to map trips using geocoded addresses', async () => {
         phone: '555',
         medicaidNumber: 'MC',
         invoiceNumber: 'INV',
-        pickupAddress: '123 Start St',
-        dropoffAddress: '456 End Ave',
+        pickupAddress: '123 Start St, Albany, NY',
+        dropoffAddress: '456 End Ave, Albany, NY',
         notes: 'n/a',
       },
     ],
   };
 
   const geoMock = jest.spyOn(geocode, 'geocodeAddress');
-  geoMock.mockResolvedValueOnce({ lat: 1, lng: 2 });
-  geoMock.mockResolvedValueOnce({ lat: 3, lng: 4 });
+  geoMock.mockResolvedValueOnce({ lat: 42.6526, lng: -73.7562 });
+  geoMock.mockResolvedValueOnce({ lat: 42.6527, lng: -73.75 });
 
   const result = await mapScheduleToTrips(schedule);
 
-  expect(geoMock).toHaveBeenCalledWith('123 Start St');
-  expect(geoMock).toHaveBeenCalledWith('456 End Ave');
+  expect(geoMock).toHaveBeenCalledWith('123 Start St, Albany, NY');
+  expect(geoMock).toHaveBeenCalledWith('456 End Ave, Albany, NY');
   expect(result).toEqual([
     {
       id: 't1',
       driverId: 'd1',
       status: 'pending',
       passengerName: 'Joe',
-      pickup: { lat: 1, lng: 2 },
-      dropoff: { lat: 3, lng: 4 },
+      pickup: { lat: 42.6526, lng: -73.7562 },
+      dropoff: { lat: 42.6527, lng: -73.75 },
     },
   ]);
 

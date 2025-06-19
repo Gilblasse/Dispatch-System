@@ -11,8 +11,8 @@ test('calls onSelect and displays status', () => {
     name: 'Alice',
     photo: 'a',
     vehicle: 'car',
-    lat: 0,
-    lng: 0,
+    lat: 40.7128,
+    lng: -74.006,
     status: 'idle',
   };
   const status: DriverStatus = { className: 'status-pill-progress', text: 'En-Route' };
