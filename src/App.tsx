@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { setDrivers } from './store/driversSlice';
-import { setTrips } from './store/tripsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDriverDetails } from './store/driverDetailsSlice';
+import { setTripsSchedule } from './store/tripsDetailsSlice';
+import { RootState } from './store';
 import './index.css';
 import { MOCK_DRIVERS, MOCK_SCHEDULE, Trip, Driver } from './mockData';
 import { getDateKey } from "./utils/dateUtils";
@@ -15,6 +16,15 @@ import {
 type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
 
 export default function App() {
+  const dispatch = useDispatch();
+  const driversData = useSelector((s: RootState) => s.driverDetails);
+  const tripsSchedule = useSelector((s: RootState) => s.tripsDetails);
+
+  useEffect(() => {
+    dispatch(setDriverDetails(MOCK_DRIVERS));
+    dispatch(setTripsSchedule(MOCK_SCHEDULE));
+  }, [dispatch]);
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [filterType, setFilterType] = useState<FilterType>('none');
   const [filterId, setFilterId] = useState<string | null>(null);
@@ -23,29 +33,10 @@ export default function App() {
   const [rosterCollapsed, setRosterCollapsed] = useState(false);
 
   const dateKey = getDateKey(selectedDate);
-  const allTripsForDay = MOCK_SCHEDULE[dateKey] || [];
+  const allTripsForDay = tripsSchedule[dateKey] || [];
 
-  let tripsToDisplay = allTripsForDay;
-  let driversToDisplay = Object.entries(MOCK_DRIVERS).map(([id, d]) => ({
-    id,
-    ...d,
-  }));
 
-  if (filterType === 'trip') {
-    tripsToDisplay = allTripsForDay.filter(t => t.id === filterId);
-    driversToDisplay = driversToDisplay.filter(
-      d => d.id === tripsToDisplay[0]?.driverId
-    );
-  } else if (filterType === 'driver') {
-    tripsToDisplay = allTripsForDay.filter(t => t.driverId === filterId);
-    driversToDisplay = driversToDisplay.filter(d => d.id === filterId);
-  } else if (filterType === 'passenger') {
-    tripsToDisplay = allTripsForDay.filter(t => t.passenger === filterId);
-    const driverIds = new Set(tripsToDisplay.map(t => t.driverId));
-    driversToDisplay = driversToDisplay.filter(d => driverIds.has(d.id));
-  }
-
-  const totalDrivers = Object.keys(MOCK_DRIVERS).length;
+  const totalDrivers = Object.keys(driversData).length;
   const totalTrips = allTripsForDay.length;
   const pending = allTripsForDay.filter(t => t.status === 'pending').length;
   const driversOnTrips = new Set(allTripsForDay.map(t => t.driverId)).size;
@@ -71,8 +62,7 @@ export default function App() {
       />
 
       <TripQueue
-        trips={tripsToDisplay}
-        drivers={MOCK_DRIVERS}
+        selectedDate={selectedDate}
         filterType={filterType}
         filterId={filterId}
         detailedTrip={detailedTrip}
@@ -93,8 +83,7 @@ export default function App() {
       />
 
       <DriverRoster
-        drivers={driversToDisplay as Driver[]}
-        trips={allTripsForDay}
+        selectedDate={selectedDate}
         activeDriverId={filterType === 'driver' ? filterId : null}
         onSelectDriver={id => {
           setFilterType('driver');

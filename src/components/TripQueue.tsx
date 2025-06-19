@@ -1,13 +1,15 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Trip, Driver } from '../mockData';
+import { RootState } from '../store';
+import { getDateKey } from '../utils/dateUtils';
 import TripCard from './TripCard';
 import TripDetails from './TripDetails';
 
 type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
 
 interface TripQueueProps {
-  trips: Trip[];
-  drivers: Record<string, Omit<Driver, 'id'>>;
+  selectedDate: Date;
   filterType: FilterType;
   filterId: string | null;
   detailedTrip: Trip | null;
@@ -20,8 +22,7 @@ interface TripQueueProps {
 }
 
 export default function TripQueue({
-  trips,
-  drivers,
+  selectedDate,
   filterType,
   filterId,
   detailedTrip,
@@ -32,6 +33,18 @@ export default function TripQueue({
   onCloseTripDetails,
   onClearFilter,
 }: TripQueueProps) {
+  const drivers = useSelector((s: RootState) => s.driverDetails);
+  const schedule = useSelector((s: RootState) => s.tripsDetails);
+  const dateKey = getDateKey(selectedDate);
+  let trips = schedule[dateKey] || [];
+
+  if (filterType === 'trip') {
+    trips = trips.filter(t => t.id === filterId);
+  } else if (filterType === 'driver') {
+    trips = trips.filter(t => t.driverId === filterId);
+  } else if (filterType === 'passenger') {
+    trips = trips.filter(t => t.passenger === filterId);
+  }
   return (
     <aside className="trip-queue">
       <div className="panel-header" id="trip-panel-header">
