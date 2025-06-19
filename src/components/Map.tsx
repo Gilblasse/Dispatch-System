@@ -60,6 +60,12 @@ export default function Map() {
     }
     updatePositions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+    };
   }, [ui.isDarkMode]);
 
   const updatePositions = () => {
