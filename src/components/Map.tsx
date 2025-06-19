@@ -83,7 +83,7 @@ export default function Map() {
   useEffect(updatePositions, [drivers, trips]);
 
   return (
-    <div className="map-wrapper">
+    <div className="map-container">
       <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
       {drivers.map(d =>
         driverPos[d.id] ? (
