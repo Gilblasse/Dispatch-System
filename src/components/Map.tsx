@@ -4,6 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { setZoom, setCenter, setDarkMode } from '../store/mapUiSlice';
+import { useFitMapToEntities } from '../hooks';
 import DriverIcon from './DriverIcon';
 import TripPin from './TripPin';
 import './MapStyles.css';
@@ -12,10 +13,13 @@ export default function Map() {
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LibMap | null>(null);
+  const [mapReady, setMapReady] = useState(false);
 
   const drivers = useSelector((s: RootState) => s.drivers);
   const trips = useSelector((s: RootState) => s.trips);
   const ui = useSelector((s: RootState) => s.mapUi);
+
+  useFitMapToEntities(mapRef.current, drivers, trips);
 
   const [driverPos, setDriverPos] = useState<Record<string, { x: number; y: number }>>({});
   const [tripPos, setTripPos] = useState<Record<string, { pickup: { x: number; y: number }; dropoff: { x: number; y: number } }>>({});
@@ -49,6 +53,7 @@ export default function Map() {
       });
       mapRef.current.on('zoom', updatePositions);
       mapRef.current.on('resize', updatePositions);
+      setMapReady(true);
     } else {
       mapRef.current.setStyle(
         ui.isDarkMode
@@ -65,6 +70,7 @@ export default function Map() {
         mapRef.current.remove();
         mapRef.current = null;
       }
+      setMapReady(false);
     };
   }, [ui.isDarkMode]);
 

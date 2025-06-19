@@ -29,19 +29,38 @@ export default function useFitMapToEntities(
   const lastTriggerRef = useRef<number | boolean | string | undefined>(undefined);
   const hasFittedRef = useRef(false);
 
-  useEffect(() => {
-    if (!map) return;
+  const isValidPoint = (p: EntityPoint | undefined): p is EntityPoint =>
+    !!p && Number.isFinite(p.lat) && Number.isFinite(p.lng);
 
-    const points: [number, number][] = [];
-    drivers.forEach(d => points.push([d.lng, d.lat]));
-    trips.forEach(t => {
-      points.push([t.pickup.lng, t.pickup.lat]);
-      points.push([t.dropoff.lng, t.dropoff.lat]);
+  const extractPoints = () => {
+    const list: [number, number][] = [];
+
+    drivers.forEach(d => {
+      if (isValidPoint(d)) {
+        list.push([d.lng, d.lat]);
+      } else {
+        console.warn('Invalid driver coordinates ignored', d);
+      }
     });
 
-    if (points.length === 0) return;
+    trips.forEach(t => {
+      if (isValidPoint(t.pickup)) list.push([t.pickup.lng, t.pickup.lat]);
+      else console.warn('Invalid trip pickup ignored', t);
+      if (isValidPoint(t.dropoff)) list.push([t.dropoff.lng, t.dropoff.lat]);
+      else console.warn('Invalid trip dropoff ignored', t);
+    });
 
-    const hash = points.map(p => p.join(',')).join('|');
+    return list;
+  };
+
+  const getHash = (pts: [number, number][]) => pts.map(p => p.join(',')).join('|');
+
+  useEffect(() => {
+    if (!map) return;
+    const pts = extractPoints();
+    if (pts.length === 0) return;
+
+    const hash = getHash(pts);
     const triggerChanged = lastTriggerRef.current !== triggerFit;
 
     if (!hasFittedRef.current || lastHashRef.current !== hash || triggerChanged) {
@@ -49,9 +68,9 @@ export default function useFitMapToEntities(
       lastTriggerRef.current = triggerFit;
       hasFittedRef.current = true;
 
-      const bounds = points.reduce(
+      const bounds = pts.reduce(
         (b, p) => b.extend(p),
-        new maplibregl.LngLatBounds(points[0], points[0])
+        new maplibregl.LngLatBounds(pts[0], pts[0])
       );
 
       const timer = setTimeout(() => {
