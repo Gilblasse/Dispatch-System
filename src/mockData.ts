@@ -179,18 +179,24 @@ export const MOCK_DRIVERS_MAP: MapDriver[] = Object.entries(MOCK_DRIVERS).map(
 export const MOCK_TRIPS_MAP: MapTrip[] = [
   {
     id: 't1',
+    driverId: 'd1',
+    status: 'pending',
     passengerName: 'Alice',
     pickup: { lat: 40.7127, lng: -74.0059 },
     dropoff: { lat: 40.721, lng: -74.01 },
   },
   {
     id: 't2',
+    driverId: 'd2',
+    status: 'en-route',
     passengerName: 'Bob',
     pickup: { lat: 40.718, lng: -74.012 },
     dropoff: { lat: 40.722, lng: -74.003 },
   },
   {
     id: 't3',
+    driverId: 'd3',
+    status: 'in-transit',
     passengerName: 'Charlie',
     pickup: { lat: 40.709, lng: -74.01 },
     dropoff: { lat: 40.714, lng: -74.016 },
