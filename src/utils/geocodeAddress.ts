@@ -24,10 +24,8 @@ export async function geocodeAddress(address: string): Promise<Coordinates> {
   }
 
   const key =
-    (typeof process !== 'undefined' && process.env.OPENCAGE_API_KEY) ||
-    (typeof import.meta !== 'undefined'
-      ? (import.meta as any).env?.VITE_OPENCAGE_API_KEY
-      : undefined) ||
+    (typeof process !== 'undefined' &&
+      (process.env.OPENCAGE_API_KEY || process.env.VITE_OPENCAGE_API_KEY)) ||
     'YOUR_OPENCAGE_API_KEY';
   try {
     const opencage = await fetch(

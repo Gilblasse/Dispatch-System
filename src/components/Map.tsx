@@ -9,7 +9,13 @@ import DriverIcon from './DriverIcon';
 import TripPin from './TripPin';
 import './MapStyles.css';
 
-export default function Map() {
+type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
+
+interface Props {
+  filterType: FilterType;
+  activeTripId: string | null;
+}
+export default function Map({ filterType, activeTripId }: Props) {
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LibMap | null>(null);
@@ -19,10 +25,24 @@ export default function Map() {
   const trips = useSelector((s: RootState) => s.trips);
   const ui = useSelector((s: RootState) => s.mapUi);
 
-  useFitMapToEntities(mapRef.current, drivers, trips);
+  let visibleDrivers = drivers;
+  let visibleTrips = trips;
+  if (filterType !== 'none') {
+    const active = trips.find(t => t.id === activeTripId);
+    if (active) {
+      visibleTrips = [active];
+      const driver = drivers.find(d => d.id === active.driverId);
+      visibleDrivers = driver ? [driver] : [];
+    } else {
+      visibleDrivers = [];
+      visibleTrips = [];
+    }
+  }
+
+  useFitMapToEntities(mapRef.current, visibleDrivers, visibleTrips);
 
   const [driverPos, setDriverPos] = useState<Record<string, { x: number; y: number }>>({});
-  const tripPos = useProjectedTrips(mapRef.current, trips);
+  const tripPos = useProjectedTrips(mapRef.current, visibleTrips);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
@@ -78,24 +98,24 @@ export default function Map() {
     if (!mapRef.current) return;
     const m = mapRef.current;
     const dPos: Record<string, { x: number; y: number }> = {};
-    drivers.forEach(d => {
+    visibleDrivers.forEach(d => {
       const p = m.project([d.lng, d.lat]);
       dPos[d.id] = { x: p.x, y: p.y };
     });
     setDriverPos(dPos);
   };
 
-  useEffect(updatePositions, [drivers]);
+  useEffect(updatePositions, [visibleDrivers]);
 
   return (
     <div className="map-container">
       <div ref={containerRef} style={{ width: '100%', height: '100%' }} />
-      {drivers.map(d =>
+      {visibleDrivers.map(d =>
         driverPos[d.id] ? (
           <DriverIcon key={d.id} driver={d} position={driverPos[d.id]} />
         ) : null
       )}
-      {trips.map(t =>
+      {visibleTrips.map(t =>
         tripPos[t.id] ? (
           <TripPin key={t.id} trip={t} position={tripPos[t.id]} />
         ) : null
