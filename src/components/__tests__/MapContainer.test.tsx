@@ -6,7 +6,14 @@ import { Trip, Driver } from '../../mockData';
 
 test('renders markers for active trips', () => {
   const drivers: Record<string, Omit<Driver, 'id'>> = {
-    d1: { name: 'Alice', photo: 'a', vehicle: 'car' },
+    d1: {
+      name: 'Alice',
+      photo: 'a',
+      vehicle: 'car',
+      lat: 0,
+      lng: 0,
+      status: 'idle',
+    },
   };
   const trips: Trip[] = [
     {
