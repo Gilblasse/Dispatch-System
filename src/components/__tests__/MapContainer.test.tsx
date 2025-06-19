@@ -10,8 +10,8 @@ test('renders markers for active trips', () => {
       name: 'Alice',
       photo: 'a',
       vehicle: 'car',
-      lat: 0,
-      lng: 0,
+      lat: 40.7128,
+      lng: -74.006,
       status: 'idle',
     },
   };
@@ -32,8 +32,8 @@ test('renders markers for active trips', () => {
       phone: '555-0000',
       medicaidNumber: 'MC-TEST',
       invoiceNumber: 'INV-TEST',
-      pickupAddress: '123 A St',
-      dropoffAddress: '456 B Ave',
+      pickupAddress: '123 Main St, New York, NY',
+      dropoffAddress: '456 Broadway Ave, New York, NY',
       notes: 'n/a',
     },
   ];

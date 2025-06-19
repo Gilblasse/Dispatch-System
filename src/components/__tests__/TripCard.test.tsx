@@ -21,8 +21,8 @@ test('calls onSelect when card is clicked', () => {
     phone: '555-0000',
     medicaidNumber: 'MC-TEST',
     invoiceNumber: 'INV-TEST',
-    pickupAddress: '123 A St',
-    dropoffAddress: '456 B Ave',
+    pickupAddress: '123 Main St, New York, NY',
+    dropoffAddress: '456 Broadway Ave, New York, NY',
     notes: 'n/a',
   };
   const onSelect = jest.fn();
@@ -58,8 +58,8 @@ test('does not show pickup time when card is inactive', () => {
     phone: '555-0000',
     medicaidNumber: 'MC-TEST',
     invoiceNumber: 'INV-TEST',
-    pickupAddress: '123 A St',
-    dropoffAddress: '456 B Ave',
+    pickupAddress: '123 Main St, New York, NY',
+    dropoffAddress: '456 Broadway Ave, New York, NY',
     notes: 'n/a',
   };
   render(
@@ -92,8 +92,8 @@ test('shows pickup time when card is active', () => {
     phone: '555-0000',
     medicaidNumber: 'MC-TEST',
     invoiceNumber: 'INV-TEST',
-    pickupAddress: '123 A St',
-    dropoffAddress: '456 B Ave',
+    pickupAddress: '123 Main St, New York, NY',
+    dropoffAddress: '456 Broadway Ave, New York, NY',
     notes: 'n/a',
   };
   render(
@@ -126,8 +126,8 @@ test('shows transport icon when card is active', () => {
     phone: '555-0000',
     medicaidNumber: 'MC-TEST',
     invoiceNumber: 'INV-TEST',
-    pickupAddress: '123 A St',
-    dropoffAddress: '456 B Ave',
+    pickupAddress: '123 Main St, New York, NY',
+    dropoffAddress: '456 Broadway Ave, New York, NY',
     notes: 'n/a',
   };
   render(
