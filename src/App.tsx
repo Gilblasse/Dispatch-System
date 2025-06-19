@@ -104,7 +104,7 @@ export default function App() {
         onToggleCollapse={() => setRosterCollapsed(c => !c)}
       />
 
-      <Map filterType={filterType} activeTripId={activeTripId} />
+      <Map filterType={filterType} activeTripId={activeTripId} filterId={filterId} />
     </div>
   );
 }

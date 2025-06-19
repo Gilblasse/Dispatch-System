@@ -12,8 +12,9 @@ type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
 interface Props {
   filterType: FilterType;
   activeTripId: string | null;
+  filterId: string | null;
 }
-export default function Map({ filterType, activeTripId }: Props) {
+export default function Map({ filterType, activeTripId, filterId }: Props) {
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<LibMap | null>(null);
@@ -25,8 +26,16 @@ export default function Map({ filterType, activeTripId }: Props) {
 
   let visibleDrivers = drivers;
   let visibleTrips = trips;
-  if (filterType !== 'none') {
-    const active = trips.find(t => t.id === activeTripId);
+
+  if (filterType === 'passenger') {
+    visibleTrips = trips.filter(t => t.passengerName === filterId);
+    const driverIds = new Set(visibleTrips.map(t => t.driverId));
+    visibleDrivers = drivers.filter(d => driverIds.has(d.id));
+  } else if (filterType === 'driver') {
+    visibleTrips = trips.filter(t => t.driverId === filterId);
+    visibleDrivers = drivers.filter(d => d.id === filterId);
+  } else if (filterType === 'trip') {
+    const active = trips.find(t => t.id === (activeTripId || filterId));
     if (active) {
       visibleTrips = [active];
       const driver = drivers.find(d => d.id === active.driverId);
