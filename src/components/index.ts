@@ -5,3 +5,4 @@ export { default as TripDetails } from './TripDetails';
 export { default as DriverRoster } from './DriverRoster';
 export { default as DriverCard } from './DriverCard';
 export { default as MapContainer } from './MapContainer';
+export { default as Map } from './Map';

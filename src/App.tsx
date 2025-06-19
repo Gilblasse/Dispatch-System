@@ -1,4 +1,7 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setDrivers } from './store/driversSlice';
+import { setTrips } from './store/tripsSlice';
 import './index.css';
 import { MOCK_DRIVERS, MOCK_SCHEDULE, Trip, Driver } from './mockData';
 import { getDateKey } from "./utils/dateUtils";
@@ -6,7 +9,7 @@ import {
   CommandBar,
   TripQueue,
   DriverRoster,
-  MapContainer,
+  Map,
 } from './components';
 
 type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
@@ -102,7 +105,7 @@ export default function App() {
         onToggleCollapse={() => setRosterCollapsed(c => !c)}
       />
 
-      <MapContainer drivers={MOCK_DRIVERS} trips={tripsToDisplay} />
+      <Map />
     </div>
   );
 }
