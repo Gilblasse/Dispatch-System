@@ -4,7 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { setZoom, setCenter, setDarkMode } from '../store/mapUiSlice';
-import { useFitMapToEntities } from '../hooks';
+import { useFitMapToEntities, useProjectedTrips } from '../hooks';
 import DriverIcon from './DriverIcon';
 import TripPin from './TripPin';
 import './MapStyles.css';
@@ -22,7 +22,7 @@ export default function Map() {
   useFitMapToEntities(mapRef.current, drivers, trips);
 
   const [driverPos, setDriverPos] = useState<Record<string, { x: number; y: number }>>({});
-  const [tripPos, setTripPos] = useState<Record<string, { pickup: { x: number; y: number }; dropoff: { x: number; y: number } }>>({});
+  const tripPos = useProjectedTrips(mapRef.current, trips);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
@@ -82,17 +82,10 @@ export default function Map() {
       const p = m.project([d.lng, d.lat]);
       dPos[d.id] = { x: p.x, y: p.y };
     });
-    const tPos: Record<string, { pickup: { x: number; y: number }; dropoff: { x: number; y: number } }> = {};
-    trips.forEach(t => {
-      const p1 = m.project([t.pickup.lng, t.pickup.lat]);
-      const p2 = m.project([t.dropoff.lng, t.dropoff.lat]);
-      tPos[t.id] = { pickup: { x: p1.x, y: p1.y }, dropoff: { x: p2.x, y: p2.y } };
-    });
     setDriverPos(dPos);
-    setTripPos(tPos);
   };
 
-  useEffect(updatePositions, [drivers, trips]);
+  useEffect(updatePositions, [drivers]);
 
   return (
     <div className="map-container">
