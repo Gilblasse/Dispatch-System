@@ -22,7 +22,12 @@ export async function geocodeAddress(address: string): Promise<Coordinates> {
 
   try {
     const nominatim = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encoded}`
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encoded}`,
+      {
+        headers: {
+          "User-Agent": "DispatchSystem/1.0 (your-email@example.com)",
+        },
+      }
     );
     if (nominatim.ok) {
       const data: Array<{ lat: string; lon: string }> = await nominatim.json();
