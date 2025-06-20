@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store';
 import { setZoom, setCenter, setDarkMode } from '../store/mapUiSlice';
 import { useFitMapToEntities } from '../hooks';
+import { getVisibleEntities } from '../utils/filterMapEntities';
 import './MapStyles.css';
 
 type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
@@ -24,34 +25,13 @@ export default function Map({ filterType, activeTripId, filterId }: Props) {
   const trips = useSelector((s: RootState) => s.trips);
   const ui = useSelector((s: RootState) => s.mapUi);
 
-  let visibleDrivers = drivers;
-  let visibleTrips = trips;
-
-  if (filterType === 'passenger') {
-    visibleTrips = trips.filter(t => t.passengerName === filterId);
-    const driverIds = new Set(visibleTrips.map(t => t.driverId));
-    visibleDrivers = drivers.filter(d => driverIds.has(d.id));
-
-    if (activeTripId) {
-      const active = visibleTrips.find(t => t.id === activeTripId);
-      if (active) {
-        visibleDrivers = visibleDrivers.filter(d => d.id === active.driverId);
-      }
-    }
-  } else if (filterType === 'driver') {
-    visibleTrips = trips.filter(t => t.driverId === filterId);
-    visibleDrivers = drivers.filter(d => d.id === filterId);
-  } else if (filterType === 'trip') {
-    const active = trips.find(t => t.id === (activeTripId || filterId));
-    if (active) {
-      visibleTrips = [active];
-      const driver = drivers.find(d => d.id === active.driverId);
-      visibleDrivers = driver ? [driver] : [];
-    } else {
-      visibleDrivers = [];
-      visibleTrips = [];
-    }
-  }
+  const { visibleDrivers, visibleTrips } = getVisibleEntities(
+    filterType,
+    filterId,
+    activeTripId,
+    drivers,
+    trips,
+  );
 
   useFitMapToEntities(mapRef.current, visibleDrivers, visibleTrips);
 
