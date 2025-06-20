@@ -1,6 +1,7 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import store from '../../store';
 import { setDrivers } from '../../store/driversSlice';
@@ -78,8 +79,10 @@ describe('Map passenger filter', () => {
       expect(container.querySelectorAll('.map-pin.map-dropoff-pin').length).toBe(2);
     });
 
-    store.dispatch(setDrivers(originalDrivers));
-    store.dispatch(setTrips(originalTrips));
-    store.dispatch(setDarkMode(originalUi.isDarkMode));
+    act(() => {
+      store.dispatch(setDrivers(originalDrivers));
+      store.dispatch(setTrips(originalTrips));
+      store.dispatch(setDarkMode(originalUi.isDarkMode));
+    });
   });
 });
