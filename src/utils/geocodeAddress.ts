@@ -44,7 +44,7 @@ export async function geocodeAddress(address: string): Promise<Coordinates> {
     // ignore error and fall back
   }
 
-  const key = import.meta.env.VITE_OPENCAGE_API_KEY || 'YOUR_OPENCAGE_API_KEY'
+  const key = import.meta.env.VITE_OPENCAGE_API_KEY || 'YOUR_OPENCAGE_API_KEY';
   try {
     const opencage = await fetch(
       `https://api.opencagedata.com/geocode/v1/json?q=${encoded}&key=${key}`

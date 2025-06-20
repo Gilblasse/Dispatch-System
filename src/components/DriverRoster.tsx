@@ -42,15 +42,20 @@ export default function DriverRoster({
 
   return (
     <footer className={`driver-roster${collapsed ? ' collapsed' : ''}`}>
-      <div className="panel-header">
+      <div
+        className="panel-header"
+        role="button"
+        tabIndex={0}
+        aria-label={collapsed ? 'Expand Active Drivers' : 'Collapse Active Drivers'}
+        onClick={onToggleCollapse}
+        onKeyPress={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            onToggleCollapse();
+          }
+        }}
+      >
         <h2>Active Drivers</h2>
-        <button
-          aria-label={collapsed ? 'Expand Active Drivers' : 'Collapse Active Drivers'}
-          className="collapse-btn"
-          onClick={onToggleCollapse}
-        >
-          <i className={`fas fa-chevron-${collapsed ? 'up' : 'down'}`} />
-        </button>
+        <i className={`fas fa-chevron-${collapsed ? 'up' : 'down'}`} />
       </div>
       {!collapsed && (
         <div

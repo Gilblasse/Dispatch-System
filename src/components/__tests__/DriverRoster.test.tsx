@@ -45,7 +45,7 @@ test('wheel event scrolls roster', () => {
   expect(roster.scrollLeft).toBe(30);
 });
 
-test('collapse button toggles roster visibility', () => {
+test('panel header toggles roster visibility', () => {
   function Wrapper() {
     const [collapsed, setCollapsed] = React.useState(false);
     return (
@@ -67,15 +67,15 @@ test('collapse button toggles roster visibility', () => {
 
   const { container } = render(<Wrapper />);
 
-  const button = screen.getByRole('button');
+  const header = screen.getByRole('button');
   const dashboard = container.querySelector('.dashboard-container') as HTMLElement;
 
   expect(screen.getByText('Elena Vance')).toBeInTheDocument();
   expect(dashboard.classList.contains('roster-collapsed')).toBe(false);
-  fireEvent.click(button);
+  fireEvent.click(header);
   expect(screen.queryByText('Elena Vance')).not.toBeInTheDocument();
   expect(dashboard.classList.contains('roster-collapsed')).toBe(true);
-  fireEvent.click(button);
+  fireEvent.click(header);
   expect(screen.getByText('Elena Vance')).toBeInTheDocument();
   expect(dashboard.classList.contains('roster-collapsed')).toBe(false);
 });
