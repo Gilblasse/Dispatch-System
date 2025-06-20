@@ -10,7 +10,7 @@ const NY_BOUNDS = {
   maxLng: -71.7517,
 };
 
-function clampToNY({ lat, lng }: Coordinates): Coordinates {
+export function clampToNY({ lat, lng }: Coordinates): Coordinates {
   return {
     lat: Math.min(Math.max(lat, NY_BOUNDS.minLat), NY_BOUNDS.maxLat),
     lng: Math.min(Math.max(lng, NY_BOUNDS.minLng), NY_BOUNDS.maxLng),
@@ -19,10 +19,7 @@ function clampToNY({ lat, lng }: Coordinates): Coordinates {
 
 export async function geocodeAddress(address: string): Promise<Coordinates> {
   const encoded = encodeURIComponent(address);
-  const email =
-    (typeof process !== 'undefined' &&
-      (process.env.NOMINATIM_EMAIL || process.env.VITE_NOMINATIM_EMAIL)) ||
-    'your-email@example.com';
+  const email = import.meta.env.VITE_NOMINATIM_EMAIL || 'your-email@example.com';
 
   try {
     const nominatim = await fetch(
@@ -38,7 +35,7 @@ export async function geocodeAddress(address: string): Promise<Coordinates> {
       if (Array.isArray(data) && data.length > 0) {
         const first = data[0];
         if (first.lat && first.lon) {
-          return clampToNY({ lat: Number(first.lat), lng: Number(first.lon) });
+          return { lat: Number(first.lat), lng: Number(first.lon) };
         }
       }
     }
@@ -46,10 +43,8 @@ export async function geocodeAddress(address: string): Promise<Coordinates> {
     // ignore error and fall back
   }
 
-  const key =
-    (typeof process !== 'undefined' &&
-      (process.env.OPENCAGE_API_KEY || process.env.VITE_OPENCAGE_API_KEY)) ||
-    'YOUR_OPENCAGE_API_KEY';
+  const key = import.meta.env.VITE_OPENCAGE_API_KEY || 'YOUR_OPENCAGE_API_KEY'
+
   try {
     const opencage = await fetch(
       `https://api.opencagedata.com/geocode/v1/json?q=${encoded}&key=${key}`
@@ -59,7 +54,7 @@ export async function geocodeAddress(address: string): Promise<Coordinates> {
         await opencage.json();
       if (data.results && data.results.length > 0) {
         const { lat, lng } = data.results[0].geometry;
-        return clampToNY({ lat, lng });
+        return { lat, lng };
       }
     }
   } catch {
