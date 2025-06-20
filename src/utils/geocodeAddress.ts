@@ -19,10 +19,19 @@ function clampToNY({ lat, lng }: Coordinates): Coordinates {
 
 export async function geocodeAddress(address: string): Promise<Coordinates> {
   const encoded = encodeURIComponent(address);
+  const email =
+    (typeof process !== 'undefined' &&
+      (process.env.NOMINATIM_EMAIL || process.env.VITE_NOMINATIM_EMAIL)) ||
+    'your-email@example.com';
 
   try {
     const nominatim = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${encoded}`
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encoded}`,
+      {
+        headers: {
+          "User-Agent": `DispatchSystem/1.0 (${email})`,
+        },
+      }
     );
     if (nominatim.ok) {
       const data: Array<{ lat: string; lon: string }> = await nominatim.json();
