@@ -14,6 +14,8 @@ test('renders driver names', () => {
         onSelectDriver={() => {}}
         collapsed={false}
         onToggleCollapse={() => {}}
+        filterType="none"
+        filterId={null}
       />
     </Provider>
   );
@@ -31,6 +33,8 @@ test('wheel event scrolls roster', () => {
         onSelectDriver={() => {}}
         collapsed={false}
         onToggleCollapse={() => {}}
+        filterType="none"
+        filterId={null}
       />
     </Provider>
   );
@@ -53,6 +57,8 @@ test('collapse button toggles roster visibility', () => {
             onSelectDriver={() => {}}
             collapsed={collapsed}
             onToggleCollapse={() => setCollapsed(c => !c)}
+            filterType="none"
+            filterId={null}
           />
         </div>
       </Provider>
@@ -72,4 +78,25 @@ test('collapse button toggles roster visibility', () => {
   fireEvent.click(button);
   expect(screen.getByText('Elena Vance')).toBeInTheDocument();
   expect(dashboard.classList.contains('roster-collapsed')).toBe(false);
+});
+
+test('filters drivers by passenger', () => {
+  render(
+    <Provider store={store}>
+      <DriverRoster
+        selectedDate={new Date()}
+        activeDriverId={null}
+        onSelectDriver={() => {}}
+        collapsed={false}
+        onToggleCollapse={() => {}}
+        filterType="passenger"
+        filterId="Marcus Thorne"
+      />
+    </Provider>
+  );
+
+  expect(screen.getByText('Ben Carter')).toBeInTheDocument();
+  expect(screen.queryByText('Elena Vance')).not.toBeInTheDocument();
+  expect(screen.queryByText('Maya Singh')).not.toBeInTheDocument();
+  expect(screen.queryByText('David Chen')).not.toBeInTheDocument();
 });
