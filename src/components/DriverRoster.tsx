@@ -6,12 +6,16 @@ import DriverCard from './DriverCard';
 import { getDriverStatus } from '../utils/driverUtils';
 
 
+type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
+
 interface DriverRosterProps {
   selectedDate: Date;
   activeDriverId: string | null;
   onSelectDriver: (driverId: string) => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
+  filterType: FilterType;
+  filterId: string | null;
 }
 
 export default function DriverRoster({
@@ -20,12 +24,21 @@ export default function DriverRoster({
   onSelectDriver,
   collapsed,
   onToggleCollapse,
+  filterType,
+  filterId,
 }: DriverRosterProps) {
   const drivers = useSelector((s: RootState) => s.driverDetails);
   const schedule = useSelector((s: RootState) => s.tripsDetails);
   const dateKey = getDateKey(selectedDate);
   const trips = schedule[dateKey] || [];
-  const driversList = Object.entries(drivers).map(([id, d]) => ({ id, ...d }));
+  let driversList = Object.entries(drivers).map(([id, d]) => ({ id, ...d }));
+
+  if (filterType === 'passenger' && filterId) {
+    const driverIds = new Set(
+      trips.filter(t => t.passenger === filterId).map(t => t.driverId),
+    );
+    driversList = driversList.filter(d => driverIds.has(d.id));
+  }
 
   return (
     <footer className={`driver-roster${collapsed ? ' collapsed' : ''}`}>

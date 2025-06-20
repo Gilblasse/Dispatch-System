@@ -102,6 +102,8 @@ export default function App() {
         }}
         collapsed={rosterCollapsed}
         onToggleCollapse={() => setRosterCollapsed(c => !c)}
+        filterType={filterType}
+        filterId={filterId}
       />
 
       <Map filterType={filterType} activeTripId={activeTripId} filterId={filterId} />
