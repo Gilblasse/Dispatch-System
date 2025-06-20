@@ -31,6 +31,13 @@ export default function Map({ filterType, activeTripId, filterId }: Props) {
     visibleTrips = trips.filter(t => t.passengerName === filterId);
     const driverIds = new Set(visibleTrips.map(t => t.driverId));
     visibleDrivers = drivers.filter(d => driverIds.has(d.id));
+
+    if (activeTripId) {
+      const active = visibleTrips.find(t => t.id === activeTripId);
+      if (active) {
+        visibleDrivers = visibleDrivers.filter(d => d.id === active.driverId);
+      }
+    }
   } else if (filterType === 'driver') {
     visibleTrips = trips.filter(t => t.driverId === filterId);
     visibleDrivers = drivers.filter(d => d.id === filterId);
