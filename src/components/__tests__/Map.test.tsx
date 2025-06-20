@@ -85,4 +85,38 @@ describe('Map passenger filter', () => {
       store.dispatch(setDarkMode(originalUi.isDarkMode));
     });
   });
+
+  test('filters drivers by active trip id', async () => {
+    const originalDrivers = store.getState().drivers;
+    const originalTrips = store.getState().trips;
+    const originalUi = store.getState().mapUi;
+
+    store.dispatch(setDrivers([
+      { id: 'd1', lat: 0, lng: 0, status: 'idle' },
+      { id: 'd2', lat: 2, lng: 2, status: 'idle' },
+    ]));
+    store.dispatch(setTrips([
+      { id: 't1', driverId: 'd1', status: 'pending', passengerName: 'Alice', pickup: { lat: 0, lng: 0 }, dropoff: { lat: 1, lng: 1 } },
+      { id: 't2', driverId: 'd2', status: 'pending', passengerName: 'Alice', pickup: { lat: 2, lng: 2 }, dropoff: { lat: 3, lng: 3 } },
+    ]));
+    store.dispatch(setDarkMode(false));
+
+    const { container } = render(
+      <Provider store={store}>
+        <Map filterType="passenger" filterId="Alice" activeTripId="t1" />
+      </Provider>
+    );
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('.map-driver').length).toBe(1);
+      expect(container.querySelectorAll('.map-pin.map-pickup-pin').length).toBe(2);
+      expect(container.querySelectorAll('.map-pin.map-dropoff-pin').length).toBe(2);
+    });
+
+    act(() => {
+      store.dispatch(setDrivers(originalDrivers));
+      store.dispatch(setTrips(originalTrips));
+      store.dispatch(setDarkMode(originalUi.isDarkMode));
+    });
+  });
 });
