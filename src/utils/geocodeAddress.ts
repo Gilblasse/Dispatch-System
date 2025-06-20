@@ -19,17 +19,8 @@ export function clampToNY({ lat, lng }: Coordinates): Coordinates {
 
 export async function geocodeAddress(address: string): Promise<Coordinates> {
   const encoded = encodeURIComponent(address);
-  const metaEnv = (() => {
-    try {
-      return (0, eval)('import.meta.env');
-    } catch {
-      return undefined;
-    }
-  })() as any;
-  const email =
-    (metaEnv && metaEnv.VITE_NOMINATIM_EMAIL) ||
-    process.env.VITE_NOMINATIM_EMAIL ||
-    'your-email@example.com';
+  // Try to get the email from the env
+  const email = import.meta.env.VITE_NOMINATIM_EMAIL || 'your-email@example.com';
 
   try {
     const nominatim = await fetch(
@@ -53,10 +44,7 @@ export async function geocodeAddress(address: string): Promise<Coordinates> {
     // ignore error and fall back
   }
 
-  const key =
-    (metaEnv && metaEnv.VITE_OPENCAGE_API_KEY) ||
-    process.env.VITE_OPENCAGE_API_KEY ||
-    'YOUR_OPENCAGE_API_KEY';
+  const key = import.meta.env.VITE_OPENCAGE_API_KEY || 'YOUR_OPENCAGE_API_KEY'
   try {
     const opencage = await fetch(
       `https://api.opencagedata.com/geocode/v1/json?q=${encoded}&key=${key}`
