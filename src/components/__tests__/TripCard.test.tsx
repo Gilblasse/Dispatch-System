@@ -32,6 +32,7 @@ test('calls onSelect when card is clicked', () => {
       isActive={false}
       onSelect={onSelect}
       onPassengerFilter={() => {}}
+      onShowPassengerPage={() => {}}
       onShowDetails={() => {}}
     />
   );
@@ -68,6 +69,7 @@ test('does not show pickup time when card is inactive', () => {
       isActive={false}
       onSelect={() => {}}
       onPassengerFilter={() => {}}
+      onShowPassengerPage={() => {}}
       onShowDetails={() => {}}
     />
   );
@@ -102,6 +104,7 @@ test('shows pickup time when card is active', () => {
       isActive={true}
       onSelect={() => {}}
       onPassengerFilter={() => {}}
+      onShowPassengerPage={() => {}}
       onShowDetails={() => {}}
     />
   );
@@ -136,6 +139,7 @@ test('shows transport icon when card is active', () => {
       isActive={true}
       onSelect={() => {}}
       onPassengerFilter={() => {}}
+      onShowPassengerPage={() => {}}
       onShowDetails={() => {}}
     />
   );

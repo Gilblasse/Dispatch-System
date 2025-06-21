@@ -16,6 +16,7 @@ test('shows message when no trips are available', () => {
         activeTripId={null}
         onSelectTrip={() => {}}
         onPassengerFilter={() => {}}
+        onShowPassengerPage={() => {}}
         onShowTripDetails={() => {}}
         onCloseTripDetails={() => {}}
         onClearFilter={() => {}}

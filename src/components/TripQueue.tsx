@@ -16,6 +16,7 @@ interface TripQueueProps {
   activeTripId: string | null;
   onSelectTrip: (tripId: string) => void;
   onPassengerFilter: (passenger: string) => void;
+  onShowPassengerPage: (passenger: string) => void;
   onShowTripDetails: (trip: Trip) => void;
   onCloseTripDetails: () => void;
   onClearFilter: () => void;
@@ -29,6 +30,7 @@ export default function TripQueue({
   activeTripId,
   onSelectTrip,
   onPassengerFilter,
+  onShowPassengerPage,
   onShowTripDetails,
   onCloseTripDetails,
   onClearFilter,
@@ -86,6 +88,7 @@ export default function TripQueue({
               isActive={activeTripId === trip.id}
               onSelect={() => onSelectTrip(trip.id)}
               onPassengerFilter={() => onPassengerFilter(trip.passenger)}
+              onShowPassengerPage={() => onShowPassengerPage(trip.passenger)}
               onShowDetails={() => onShowTripDetails(trip)}
             />
           ))}
