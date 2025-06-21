@@ -23,7 +23,7 @@ test('renders KPIs and selected date', () => {
   expect(screen.getByText(formatDateForDisplay(date))).toBeInTheDocument();
 });
 
-test('clicking current date triggers date picker', () => {
+test('clicking current date opens date picker', () => {
   const date = new Date('2024-01-01');
   render(
     <CommandBar
@@ -38,9 +38,6 @@ test('clicking current date triggers date picker', () => {
     />
   );
 
-  const input = document.getElementById('date-picker') as HTMLInputElement;
-  // mock showPicker if available
-  (input as any).showPicker = jest.fn();
   fireEvent.click(screen.getByText(formatDateForDisplay(date)));
-  expect((input as any).showPicker).toHaveBeenCalled();
+  expect(document.querySelector('.react-datepicker')).toBeInTheDocument();
 });
