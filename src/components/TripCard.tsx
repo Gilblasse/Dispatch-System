@@ -19,6 +19,7 @@ interface TripCardProps {
   isActive: boolean;
   onSelect: () => void;
   onPassengerFilter: () => void;
+  onShowPassengerPage: () => void;
   onShowDetails: () => void;
 }
 
@@ -27,6 +28,7 @@ export default function TripCard({
   isActive,
   onSelect,
   onPassengerFilter,
+  onShowPassengerPage,
   onShowDetails,
 }: TripCardProps) {
   return (
@@ -34,7 +36,7 @@ export default function TripCard({
       className={`trip-card ${isActive ? 'active' : ''}`}
       data-status={trip.status}
       onClick={onSelect}
-      onDoubleClick={onPassengerFilter}
+      onDoubleClick={onShowPassengerPage}
     >
       <div className="trip-header">
         <h3

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setDriverDetails } from './store/driverDetailsSlice';
 import { setTripsSchedule } from './store/tripsDetailsSlice';
@@ -13,6 +13,7 @@ import {
   TripQueue,
   DriverRoster,
   Map,
+  PassengerPage,
 } from './components';
 
 type FilterType = 'none' | 'trip' | 'driver' | 'passenger';
@@ -40,6 +41,7 @@ export default function App() {
   const [filterId, setFilterId] = useState<string | null>(null);
   const [detailedTrip, setDetailedTrip] = useState<Trip | null>(null);
   const [activeTripId, setActiveTripId] = useState<string | null>(null);
+  const [passengerView, setPassengerView] = useState<string | null>(null);
   const [rosterCollapsed, setRosterCollapsed] = useState(false);
 
   const dateKey = getDateKey(selectedDate);
@@ -56,6 +58,7 @@ export default function App() {
     setFilterId(null);
     setDetailedTrip(null);
     setActiveTripId(null);
+    setPassengerView(null);
   }, [selectedDate]);
 
   return (
@@ -71,26 +74,39 @@ export default function App() {
         onDateChange={setSelectedDate}
       />
 
-      <TripQueue
-        selectedDate={selectedDate}
-        filterType={filterType}
-        filterId={filterId}
-        detailedTrip={detailedTrip}
-        activeTripId={activeTripId}
-        onSelectTrip={setActiveTripId}
-        onPassengerFilter={passenger => {
-          setFilterType('passenger');
-          setFilterId(passenger);
-          setDetailedTrip(null);
-        }}
-        onShowTripDetails={setDetailedTrip}
-        onCloseTripDetails={() => setDetailedTrip(null)}
-        onClearFilter={() => {
-          setFilterType('none');
-          setFilterId(null);
-          setDetailedTrip(null);
-        }}
-      />
+      {passengerView ? (
+        <PassengerPage
+          passenger={passengerView}
+          onBack={() => {
+            setPassengerView(null);
+            setFilterType('none');
+            setFilterId(null);
+            setDetailedTrip(null);
+          }}
+        />
+      ) : (
+        <TripQueue
+          selectedDate={selectedDate}
+          filterType={filterType}
+          filterId={filterId}
+          detailedTrip={detailedTrip}
+          activeTripId={activeTripId}
+          onSelectTrip={setActiveTripId}
+          onPassengerFilter={passenger => {
+            setFilterType('passenger');
+            setFilterId(passenger);
+            setDetailedTrip(null);
+          }}
+          onShowPassengerPage={setPassengerView}
+          onShowTripDetails={setDetailedTrip}
+          onCloseTripDetails={() => setDetailedTrip(null)}
+          onClearFilter={() => {
+            setFilterType('none');
+            setFilterId(null);
+            setDetailedTrip(null);
+          }}
+        />
+      )}
 
       <DriverRoster
         selectedDate={selectedDate}
