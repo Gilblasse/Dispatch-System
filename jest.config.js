@@ -4,6 +4,7 @@ export default {
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
     '^.*geocodeAddress$': '<rootDir>/src/utils/geocodeAddress.node.ts',
+    '\\.(css)$': '<rootDir>/__mocks__/styleMock.js',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   transform: {

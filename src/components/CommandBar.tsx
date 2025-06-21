@@ -1,4 +1,6 @@
-import React, { useRef } from 'react';
+import React, { forwardRef } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { formatDateForDisplay } from '../utils/dateUtils';
 
 interface CommandBarProps {
@@ -12,6 +14,14 @@ interface CommandBarProps {
   onDateChange: (date: Date) => void;
 }
 
+const DateDisplay = forwardRef<HTMLSpanElement, { value?: string; onClick?: () => void }>(
+  ({ value, onClick }, ref) => (
+    <span id="current-date" onClick={onClick} ref={ref}>
+      {value}
+    </span>
+  )
+);
+
 export default function CommandBar({
   selectedDate,
   pending,
@@ -22,32 +32,21 @@ export default function CommandBar({
   onNextDate,
   onDateChange,
 }: CommandBarProps) {
-  const dateInputRef = useRef<HTMLInputElement>(null);
-
-  const handleDateClick = () => {
-    const input = dateInputRef.current;
-    if (!input) return;
-    if (typeof (input as any).showPicker === 'function') {
-      (input as any).showPicker();
-    } else {
-      input.focus();
-      input.click();
-    }
-  };
 
   return (
     <header className="command-bar">
       <div className="logo">Zenith</div>
       <div className="date-navigator">
         <i className="fas fa-chevron-left nav-arrow" onClick={onPrevDate} />
-        <span id="current-date" onClick={handleDateClick}>{formatDateForDisplay(selectedDate)}</span>
-        <input
+        <DatePicker
           id="date-picker"
-          type="date"
-          ref={dateInputRef}
-          style={{ position: 'absolute', left: '-9999px' }}
-          value={selectedDate.toISOString().split('T')[0]}
-          onChange={e => onDateChange(new Date(e.target.value))}
+          selected={selectedDate}
+          onChange={(date: Date | null) => {
+            if (date) onDateChange(date);
+          }}
+          customInput={<DateDisplay value={formatDateForDisplay(selectedDate)} />}
+          dateFormat="MMM d"
+          popperPlacement="bottom"
         />
         <i className="fas fa-chevron-right nav-arrow" onClick={onNextDate} />
       </div>
